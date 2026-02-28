@@ -1,5 +1,5 @@
-import {useEffect, useState} from 'react'
-import {MapContainer, Marker, TileLayer, useMap} from 'react-leaflet'
+import { useEffect, useState } from 'react'
+import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
@@ -19,7 +19,7 @@ const droneIcon = L.divIcon({
   iconAnchor: [12, 12],
 })
 
-function MapUpdater({position}: { position: [number, number] }) {
+function MapUpdater({ position }: { position: [number, number] }) {
   const map = useMap()
   useEffect(() => {
     map.setView(position, map.getZoom())
@@ -49,7 +49,7 @@ function App() {
           alt: pos.message.alt / 1000,
           heading: pos.message.hdg / 100,
           groundSpeed: Math.sqrt(
-            Math.pow(pos.message.vx / 100, 2) + Math.pow(pos.message.vy / 100, 2)
+            Math.pow(pos.message.vx / 100, 2) + Math.pow(pos.message.vy / 100, 2),
           ),
           battery: batt.message.battery_remaining,
         })
@@ -67,39 +67,36 @@ function App() {
     : [-35.3632, 149.1652]
 
   return (
-    <div style={{display: 'flex', height: '100vh'}}>
-      <div style={{width: 250, padding: 20, fontFamily: 'monospace', background: '#1a1a1a', color: '#fff'}}>
-        <h2>Telemetry</h2>
+    <div className="flex h-screen">
+      <div className="w-64 p-5 font-mono bg-(--color-panel-solid) text-white">
+        <h2 className="text-lg font-semibold mb-3">Telemetry</h2>
         {telemetry ? (
-          <div>
+          <div className="space-y-1 text-sm">
             <p>Lat: {telemetry.lat.toFixed(7)}</p>
             <p>Lon: {telemetry.lon.toFixed(7)}</p>
             <p>Alt: {telemetry.alt.toFixed(1)} m</p>
-            <p>Hdg: {telemetry.heading.toFixed(0)}°</p>
+            <p>Hdg: {telemetry.heading.toFixed(0)}&deg;</p>
             <p>Spd: {telemetry.groundSpeed.toFixed(1)} m/s</p>
             <p>Bat: {telemetry.battery}%</p>
           </div>
         ) : (
-          <p>Waiting...</p>
+          <p className="text-sm text-neutral-400">Waiting...</p>
         )}
       </div>
-      <div style={{flex: 1, height: '100%'}}>
+      <div className="flex-1 size-full">
         <MapContainer
           center={position}
           zoom={17}
-          style={{
-            height:"1000px",
-            width:"1000px"
-          }}
+          className="size-full"
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; OpenStreetMap'
+            attribution="&copy; OpenStreetMap"
           />
           {telemetry && (
             <>
-              <Marker position={position} icon={droneIcon}/>
-              <MapUpdater position={position}/>
+              <Marker position={position} icon={droneIcon} />
+              <MapUpdater position={position} />
             </>
           )}
         </MapContainer>
