@@ -1,8 +1,5 @@
-import { useEffect, useState } from 'react'
-import { motion } from 'motion/react'
-
 interface CompassProps {
-  heading: number
+  heading: number | null
   groundSpeed: number
 }
 
@@ -15,19 +12,9 @@ const CARDINALS = [
 
 const TICK_ANGLES = Array.from({ length: 12 }, (_, i) => i * 30)
 
-export function Compass({ heading: _heading, groundSpeed }: CompassProps) {
-  // TODO: remove test heading cycle
-  const [heading, setHeading] = useState(0)
-  useEffect(() => {
-    const id = setInterval(() => setHeading((h) => (h + 1) % 360), 100)
-    return () => clearInterval(id)
-  }, [])
-
+export function Compass({ heading, groundSpeed }: CompassProps) {
   return (
     <svg viewBox="12 12 176 176" className="w-full h-auto">
-      {/* Outer ring */}
-      <circle cx="100" cy="100" r="85" className="fill-none stroke-(--gray-a6)" strokeWidth="1" />
-
       {/* Minor ticks every 30deg */}
       {TICK_ANGLES.map((angle) => {
         const isCardinal = angle % 90 === 0
@@ -70,18 +57,39 @@ export function Compass({ heading: _heading, groundSpeed }: CompassProps) {
         )
       })}
 
-      {/* Heading line — computed endpoint */}
-      {(() => {
+      {/* Heading pointer + label */}
+      {heading !== null && (() => {
         const rad = (heading - 90) * (Math.PI / 180)
+        const innerR = 35
+        const outerR = 43
+        const arrowR = 45
+        const arrowSpread = 2
+        const labelR = 75
+        const perpRad = rad + Math.PI / 2
         return (
-          <line
-            x1="100"
-            y1="100"
-            x2={100 + 85 * Math.cos(rad)}
-            y2={100 + 85 * Math.sin(rad)}
-            className="stroke-(--accent-9)"
-            strokeWidth="2"
-          />
+          <>
+            <line
+              x1={100 + innerR * Math.cos(rad)}
+              y1={100 + innerR * Math.sin(rad)}
+              x2={100 + outerR * Math.cos(rad)}
+              y2={100 + outerR * Math.sin(rad)}
+              className="stroke-(--gray-12)"
+              strokeWidth="1"
+            />
+            <polygon
+              points={`${100 + arrowR * Math.cos(rad)},${100 + arrowR * Math.sin(rad)} ${100 + outerR * Math.cos(rad) + arrowSpread * Math.cos(perpRad)},${100 + outerR * Math.sin(rad) + arrowSpread * Math.sin(perpRad)} ${100 + outerR * Math.cos(rad) - arrowSpread * Math.cos(perpRad)},${100 + outerR * Math.sin(rad) - arrowSpread * Math.sin(perpRad)}`}
+              className="fill-(--gray-12)"
+            />
+            <text
+              x={100 + labelR * Math.cos(rad)}
+              y={100 + labelR * Math.sin(rad)}
+              textAnchor="middle"
+              dominantBaseline="central"
+              className="fill-(--gray-12) text-xs font-bold font-mono"
+            >
+              {heading.toFixed(0)}&deg;
+            </text>
+          </>
         )
       })()}
 
@@ -103,17 +111,6 @@ export function Compass({ heading: _heading, groundSpeed }: CompassProps) {
         className="fill-(--gray-11) text-[10px]"
       >
         m/s
-      </text>
-
-      {/* Heading value below speed */}
-      <text
-        x="100"
-        y="128"
-        textAnchor="middle"
-        dominantBaseline="central"
-        className="fill-(--gray-12) text-xs font-bold font-mono"
-      >
-        {heading.toFixed(0)}&deg;
       </text>
     </svg>
   )
