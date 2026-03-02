@@ -33,7 +33,7 @@ function App() {
         telemetry={telemetry}
         onBegin={beginTransition}
         onTransitionComplete={onTransitionComplete}
-        map={<MapView position={position} hasTelemetry={!!telemetry} activeLayer={mapLayer} />}
+        map={<MapView position={position} hasTelemetry={!!telemetry} activeLayer={mapLayer} heading={telemetry?.heading ?? 0} />}
       >
         {isExpanded && (
           <>
