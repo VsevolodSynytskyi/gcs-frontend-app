@@ -25,6 +25,7 @@ export function BatteryCard({ percentage }: BatteryCardProps) {
         <div className="h-2.5 w-full rounded-full bg-(--gray-a3) overflow-hidden">
           <motion.div
             className={`h-full rounded-full ${barColor(percentage)}`}
+            initial={false}
             animate={{ width: `${Math.max(0, Math.min(100, percentage))}%` }}
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
           />

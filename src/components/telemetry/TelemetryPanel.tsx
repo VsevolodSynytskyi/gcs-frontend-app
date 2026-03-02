@@ -17,15 +17,15 @@ interface TelemetryPanelProps {
 export function TelemetryPanel({ telemetry, connectionStatus, onArm, onDisarm, appearance }: TelemetryPanelProps) {
   return (
     <motion.div
-      initial={{ x: -40, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
+      initial={{ x: -40 }}
+      animate={{ x: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
       className="absolute left-4 top-1/2 -translate-y-1/2 z-[1000] w-72"
     >
       <Theme appearance={appearance} hasBackground={false} className="flex flex-col gap-1">
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 0 }}
         >
           <StatusCard
@@ -37,16 +37,16 @@ export function TelemetryPanel({ telemetry, connectionStatus, onArm, onDisarm, a
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 0.05 }}
         >
           <BatteryCard percentage={telemetry?.battery ?? 0} />
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 0.1 }}
         >
           <NavigationCard
@@ -58,8 +58,8 @@ export function TelemetryPanel({ telemetry, connectionStatus, onArm, onDisarm, a
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 0.15 }}
         >
           <PositionCard
