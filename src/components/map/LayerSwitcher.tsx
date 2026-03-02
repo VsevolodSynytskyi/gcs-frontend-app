@@ -1,4 +1,4 @@
-import { SegmentedControl, Theme } from '@radix-ui/themes'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 
 export type MapLayer = 'Dark' | 'Street' | 'Satellite'
 
@@ -11,19 +11,26 @@ interface LayerSwitcherProps {
 export function LayerSwitcher({ activeLayer, onLayerChange, appearance }: LayerSwitcherProps) {
   return (
     <div className="absolute bottom-3 left-3 z-[1000]">
-      <Theme appearance={appearance} hasBackground={false}>
-        <div className="backdrop-blur-sm bg-(--gray-a2) border border-white/10 rounded-lg shadow-lg p-1">
-          <SegmentedControl.Root
-            size="1"
+      <div className={appearance === 'dark' ? 'dark' : 'light'}>
+        <div className="backdrop-blur-sm bg-foreground/5 border border-white/10 rounded-lg shadow-lg p-1">
+          <ToggleGroup
+            type="single"
             value={activeLayer}
-            onValueChange={(value) => onLayerChange(value as MapLayer)}
+            onValueChange={(value) => { if (value) onLayerChange(value as MapLayer) }}
+            className="gap-0"
           >
-            <SegmentedControl.Item value="Dark">Dark</SegmentedControl.Item>
-            <SegmentedControl.Item value="Street">Street</SegmentedControl.Item>
-            <SegmentedControl.Item value="Satellite">Satellite</SegmentedControl.Item>
-          </SegmentedControl.Root>
+            <ToggleGroupItem value="Dark" className="text-xs px-3 py-1 h-7 rounded-md data-[state=on]:bg-background data-[state=on]:text-foreground">
+              Dark
+            </ToggleGroupItem>
+            <ToggleGroupItem value="Street" className="text-xs px-3 py-1 h-7 rounded-md data-[state=on]:bg-background data-[state=on]:text-foreground">
+              Street
+            </ToggleGroupItem>
+            <ToggleGroupItem value="Satellite" className="text-xs px-3 py-1 h-7 rounded-md data-[state=on]:bg-background data-[state=on]:text-foreground">
+              Satellite
+            </ToggleGroupItem>
+          </ToggleGroup>
         </div>
-      </Theme>
+      </div>
     </div>
   )
 }

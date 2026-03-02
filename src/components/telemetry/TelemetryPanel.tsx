@@ -1,4 +1,3 @@
-import { Theme } from '@radix-ui/themes'
 import { motion } from 'motion/react'
 import type { ConnectionStatus, Telemetry } from '../../hooks/useTelemetry'
 import { StatusCard } from './StatusCard'
@@ -22,7 +21,7 @@ export function TelemetryPanel({ telemetry, connectionStatus, onArm, onDisarm, a
       transition={{ duration: 0.4, ease: 'easeOut' }}
       className="absolute left-4 top-1/2 -translate-y-1/2 z-[1000] w-72"
     >
-      <Theme appearance={appearance} hasBackground={false} className="flex flex-col gap-1">
+      <div className={`flex flex-col gap-1 ${appearance === 'dark' ? 'dark' : 'light'}`}>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -67,7 +66,7 @@ export function TelemetryPanel({ telemetry, connectionStatus, onArm, onDisarm, a
             lon={telemetry?.lon ?? 0}
           />
         </motion.div>
-      </Theme>
+      </div>
     </motion.div>
   )
 }

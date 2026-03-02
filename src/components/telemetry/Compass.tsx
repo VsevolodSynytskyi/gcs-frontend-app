@@ -31,7 +31,7 @@ export function Compass({ heading, groundSpeed }: CompassProps) {
             y1={y1}
             x2={x2}
             y2={y2}
-            className="stroke-(--gray-a6)"
+            className="stroke-foreground/20"
             strokeWidth={1}
           />
         )
@@ -50,7 +50,7 @@ export function Compass({ heading, groundSpeed }: CompassProps) {
             y={y}
             textAnchor="middle"
             dominantBaseline="central"
-            className="fill-(--gray-11) text-[11px] font-semibold"
+            className="fill-muted-foreground text-[11px] font-semibold"
           >
             {label}
           </text>
@@ -73,19 +73,19 @@ export function Compass({ heading, groundSpeed }: CompassProps) {
               y1={100 + innerR * Math.sin(rad)}
               x2={100 + outerR * Math.cos(rad)}
               y2={100 + outerR * Math.sin(rad)}
-              className="stroke-(--gray-12)"
+              className="stroke-foreground"
               strokeWidth="1"
             />
             <polygon
               points={`${100 + arrowR * Math.cos(rad)},${100 + arrowR * Math.sin(rad)} ${100 + outerR * Math.cos(rad) + arrowSpread * Math.cos(perpRad)},${100 + outerR * Math.sin(rad) + arrowSpread * Math.sin(perpRad)} ${100 + outerR * Math.cos(rad) - arrowSpread * Math.cos(perpRad)},${100 + outerR * Math.sin(rad) - arrowSpread * Math.sin(perpRad)}`}
-              className="fill-(--gray-12)"
+              className="fill-foreground"
             />
             <text
               x={100 + labelR * Math.cos(rad)}
               y={100 + labelR * Math.sin(rad)}
               textAnchor="middle"
               dominantBaseline="central"
-              className="fill-(--gray-12) text-xs font-bold font-mono"
+              className="fill-foreground text-xs font-bold font-mono"
             >
               {heading.toFixed(0)}&deg;
             </text>
@@ -99,7 +99,7 @@ export function Compass({ heading, groundSpeed }: CompassProps) {
         y="93"
         textAnchor="middle"
         dominantBaseline="central"
-        className="fill-(--gray-12) text-2xl font-bold"
+        className="fill-foreground text-2xl font-bold"
       >
         {groundSpeed.toFixed(1)}
       </text>
@@ -108,7 +108,7 @@ export function Compass({ heading, groundSpeed }: CompassProps) {
         y="110"
         textAnchor="middle"
         dominantBaseline="central"
-        className="fill-(--gray-11) text-[10px]"
+        className="fill-muted-foreground text-[10px]"
       >
         m/s
       </text>

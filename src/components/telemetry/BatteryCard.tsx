@@ -1,4 +1,3 @@
-import { Flex, Text } from '@radix-ui/themes'
 import { motion } from 'motion/react'
 import { GlassCard } from '../ui/GlassCard'
 
@@ -15,14 +14,14 @@ function barColor(pct: number): string {
 export function BatteryCard({ percentage }: BatteryCardProps) {
   return (
     <GlassCard>
-      <Flex direction="column" gap="2">
-        <Flex justify="between" align="center">
-          <Text size="1" color="gray" className="uppercase tracking-wider">Battery</Text>
-          <Text size="3" weight="bold" color="gray" highContrast className="font-mono">
+      <div className="flex flex-col gap-2">
+        <div className="flex justify-between items-center">
+          <span className="text-xs text-muted-foreground uppercase tracking-wider">Battery</span>
+          <span className="text-base font-bold text-foreground font-mono">
             {percentage}%
-          </Text>
-        </Flex>
-        <div className="h-2.5 w-full rounded-full bg-(--gray-a3) overflow-hidden">
+          </span>
+        </div>
+        <div className="h-2.5 w-full rounded-full bg-foreground/10 overflow-hidden">
           <motion.div
             className={`h-full rounded-full ${barColor(percentage)}`}
             initial={false}
@@ -30,7 +29,7 @@ export function BatteryCard({ percentage }: BatteryCardProps) {
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
           />
         </div>
-      </Flex>
+      </div>
     </GlassCard>
   )
 }

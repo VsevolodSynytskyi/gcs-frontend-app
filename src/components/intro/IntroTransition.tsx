@@ -64,7 +64,7 @@ export function IntroTransition({
         <div className="absolute inset-0 flex items-center justify-center z-[1]">
           <div
             ref={cardRef}
-            className="w-72 backdrop-blur-sm bg-(--gray-a2) border border-white/10 shadow-lg rounded-xl"
+            className="w-72 backdrop-blur-sm bg-foreground/5 border border-white/10 shadow-lg rounded-xl"
           >
             <IntroCard phase={phase} onBegin={onBegin} />
           </div>

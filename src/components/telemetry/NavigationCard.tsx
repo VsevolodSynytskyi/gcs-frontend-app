@@ -1,4 +1,4 @@
-import { Flex, Separator, Text } from '@radix-ui/themes'
+import { Separator } from '@/components/ui/separator'
 import { GlassCard } from '../ui/GlassCard'
 import { Compass } from './Compass'
 
@@ -13,20 +13,20 @@ export function NavigationCard({ heading, groundSpeed, altitude, verticalSpeed }
   return (
     <GlassCard>
       <Compass heading={heading} groundSpeed={groundSpeed} />
-      <Separator size="4" className="my-3" />
+      <Separator className="my-3" />
       <div className="grid grid-cols-2 gap-4">
-        <Flex direction="column" gap="1">
-          <Text size="1" color="gray" className="uppercase tracking-wider">Altitude</Text>
-          <Text size="3" weight="bold" color="gray" highContrast className="font-mono">
+        <div className="flex flex-col gap-1">
+          <span className="text-xs text-muted-foreground uppercase tracking-wider">Altitude</span>
+          <span className="text-base font-bold text-foreground font-mono">
             {altitude.toFixed(1)} m
-          </Text>
-        </Flex>
-        <Flex direction="column" gap="1">
-          <Text size="1" color="gray" className="uppercase tracking-wider">Vertical Speed</Text>
-          <Text size="3" weight="bold" color="gray" highContrast className="font-mono">
+          </span>
+        </div>
+        <div className="flex flex-col gap-1">
+          <span className="text-xs text-muted-foreground uppercase tracking-wider">Vertical Speed</span>
+          <span className="text-base font-bold text-foreground font-mono">
             {verticalSpeed > 0 ? '+' : ''}{verticalSpeed.toFixed(1)} m/s
-          </Text>
-        </Flex>
+          </span>
+        </div>
       </div>
     </GlassCard>
   )
