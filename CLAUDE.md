@@ -42,7 +42,6 @@ src/
 
 ## Git
 - **NEVER** commit, amend, or push without the user explicitly asking you to.
-- Always show the user what will be committed (files, diff summary) and let them review before committing.
 
 ## Commands
 - `npm run dev` — start dev server
