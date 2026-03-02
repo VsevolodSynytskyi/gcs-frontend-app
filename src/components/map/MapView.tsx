@@ -18,6 +18,17 @@ function MapUpdater({ position }: { position: [number, number] }) {
   return null
 }
 
+function MapResizeObserver() {
+  const map = useMap()
+  useEffect(() => {
+    const container = map.getContainer()
+    const observer = new ResizeObserver(() => map.invalidateSize())
+    observer.observe(container)
+    return () => observer.disconnect()
+  }, [map])
+  return null
+}
+
 function LayerChangeListener({ onLayerChange }: { onLayerChange: (name: string) => void }) {
   useMapEvent('baselayerchange', (e) => {
     onLayerChange(e.name)
@@ -59,6 +70,7 @@ export function MapView({ position, hasTelemetry, onLayerChange }: MapViewProps)
           />
         </LayersControl.BaseLayer>
       </LayersControl>
+      <MapResizeObserver />
       {onLayerChange && <LayerChangeListener onLayerChange={onLayerChange} />}
       {hasTelemetry && (
         <>

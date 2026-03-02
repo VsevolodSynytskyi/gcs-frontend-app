@@ -17,7 +17,7 @@ interface TelemetryPanelProps {
 export function TelemetryPanel({ telemetry, connectionStatus, onArm, onDisarm, appearance }: TelemetryPanelProps) {
   return (
     <motion.div
-      initial={{ x: -40 }}
+      initial={{ x: 40 }}
       animate={{ x: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
       className="absolute left-4 top-1/2 -translate-y-1/2 z-[1000] w-72"

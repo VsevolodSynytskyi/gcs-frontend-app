@@ -1,11 +1,19 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { motion, AnimatePresence } from 'motion/react'
 import { useTelemetry } from './hooks/useTelemetry'
+import { useAppPhase } from './hooks/useAppPhase'
 import { MapView } from './components/map/MapView'
 import { TelemetryPanel } from './components/telemetry/TelemetryPanel'
+import { IntroCard } from './components/intro/IntroCard'
 
 function App() {
   const { telemetry, connectionStatus } = useTelemetry()
+  const { phase, beginTransition, onTransitionComplete } = useAppPhase(connectionStatus)
   const [mapLayer, setMapLayer] = useState('Dark')
+
+  const containerRef = useRef<HTMLDivElement>(null)
+  const cardRef = useRef<HTMLDivElement>(null)
+  const cardClipRef = useRef('inset(30% 30% 30% 30% round 12px)')
 
   const position: [number, number] = telemetry
     ? [telemetry.lat, telemetry.lon]
@@ -30,21 +38,72 @@ function App() {
     console.log('Disarm command (mock)')
   }
 
+  const isCard = phase === 'idle' || phase === 'ready'
+  const isExpanded = phase === 'transitioning' || phase === 'active'
+
+  // Measure card position relative to container for clip-path
+  useEffect(() => {
+    if (isCard && containerRef.current && cardRef.current) {
+      const c = containerRef.current.getBoundingClientRect()
+      const card = cardRef.current.getBoundingClientRect()
+      const top = card.top - c.top
+      const right = c.right - card.right
+      const bottom = c.bottom - card.bottom
+      const left = card.left - c.left
+      cardClipRef.current = `inset(${top}px ${right}px ${bottom}px ${left}px round 12px)`
+    }
+  })
+
   return (
     <div className="h-screen w-screen bg-(--color-background) p-1">
-      <div className="size-full rounded-lg overflow-hidden relative">
-        <MapView
-          position={position}
-          hasTelemetry={!!telemetry}
-          onLayerChange={setMapLayer}
-        />
-        <TelemetryPanel
-          telemetry={telemetry}
-          connectionStatus={connectionStatus}
-          onArm={handleArm}
-          onDisarm={handleDisarm}
-          appearance={panelAppearance}
-        />
+      <div ref={containerRef} className="size-full relative">
+        {/* Map — full size, revealed via clip-path from card position */}
+        {isExpanded && (
+          <motion.div
+            className="absolute inset-0"
+            initial={{ clipPath: cardClipRef.current }}
+            animate={{ clipPath: 'inset(0px round 8px)' }}
+            transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+            onAnimationComplete={() => {
+              if (phase === 'transitioning') onTransitionComplete()
+            }}
+          >
+            <MapView
+              position={position}
+              hasTelemetry={!!telemetry}
+              onLayerChange={setMapLayer}
+            />
+          </motion.div>
+        )}
+
+        {/* Intro card — glass + content, fades out via AnimatePresence */}
+        <AnimatePresence>
+          {isCard && (
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center z-[1]"
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div
+                ref={cardRef}
+                className="w-72 backdrop-blur-sm bg-(--gray-a2) border border-white/10 shadow-lg rounded-xl"
+              >
+                <IntroCard phase={phase} onBegin={beginTransition} />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Telemetry panel — enters as soon as transition starts */}
+        {isExpanded && (
+          <TelemetryPanel
+            telemetry={telemetry}
+            connectionStatus={connectionStatus}
+            onArm={handleArm}
+            onDisarm={handleDisarm}
+            appearance={panelAppearance}
+          />
+        )}
       </div>
     </div>
   )
