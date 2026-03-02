@@ -30,14 +30,6 @@ const TILE_LAYERS: Record<MapLayer, { url: string; attribution: string }> = {
   },
 }
 
-function MapUpdater({ position }: { position: [number, number] }) {
-  const map = useMap()
-  useEffect(() => {
-    map.setView(position, map.getZoom())
-  }, [position, map])
-  return null
-}
-
 function MapResizeObserver() {
   const map = useMap()
   useEffect(() => {
@@ -69,12 +61,7 @@ export function MapView({ position, hasTelemetry, activeLayer, heading }: MapVie
     >
       <TileLayer key={activeLayer} url={layer.url} attribution={layer.attribution} />
       <MapResizeObserver />
-      {hasTelemetry && (
-        <>
-          <Marker position={position} icon={icon} />
-          <MapUpdater position={position} />
-        </>
-      )}
+      {hasTelemetry && <Marker position={position} icon={icon} />}
     </MapContainer>
   )
 }
