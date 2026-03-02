@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+.radix-themes {
+  --cursor-button: pointer;
+  --cursor-checkbox: pointer;
+  --cursor-menu-item: pointer;
+  --cursor-radio: pointer;
+  --cursor-slider-thumb: pointer;
+  --cursor-slider-thumb-active: grabbing;
+  --cursor-switch: pointer;
+}
+
+@theme {
+  --animate-cell-ripple: cell-ripple var(--duration) ease-out var(--delay);
+}
+
+@keyframes cell-ripple {
+  0% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.4; }
+}
