@@ -74,12 +74,12 @@ function App() {
         {/* Map — mounted early for preloading, hidden until transition */}
         {telemetry && (
           <motion.div
-            className="absolute inset-0"
+            className={`absolute inset-0 border border-white/10 rounded-lg overflow-hidden ${isCard ? 'invisible' : 'visible'}`}
             initial={false}
             animate={
               isExpanded
-                ? { clipPath: 'inset(0px round 8px)', opacity: 1 }
-                : { clipPath: cardClipRef.current, opacity: 0 }
+                ? { clipPath: 'inset(0px round 8px)' }
+                : { clipPath: cardClipRef.current }
             }
             transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
             onAnimationComplete={() => {
