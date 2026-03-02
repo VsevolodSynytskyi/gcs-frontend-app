@@ -16,8 +16,7 @@ export function useAppPhase(connectionStatus: ConnectionStatus) {
   }, [phase, connectionStatus])
 
   const beginTransition = useCallback(() => {
-    // TODO: revert to phase === 'ready' only
-    if (phase === 'ready' || phase === 'idle') setPhase('transitioning')
+    if (phase === 'ready') setPhase('transitioning')
   }, [phase])
 
   const onTransitionComplete = useCallback(() => {

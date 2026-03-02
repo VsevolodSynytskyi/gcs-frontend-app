@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
+import { motion } from 'motion/react'
 import { useTelemetry } from './hooks/useTelemetry'
 import { useAppPhase } from './hooks/useAppPhase'
 import { MapView } from './components/map/MapView'
@@ -14,10 +14,12 @@ function App() {
   const containerRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
   const cardClipRef = useRef('inset(30% 30% 30% 30% round 12px)')
+  const lastPosition = useRef<[number, number]>([0, 0])
 
-  const position: [number, number] = telemetry
-    ? [telemetry.lat, telemetry.lon]
-    : [-35.3632, 149.1652]
+  if (telemetry) {
+    lastPosition.current = [telemetry.lat, telemetry.lon]
+  }
+  const position = lastPosition.current
 
   let panelAppearance: 'dark' | 'light'
   switch (mapLayer) {
@@ -28,15 +30,27 @@ function App() {
       panelAppearance = 'dark'
   }
 
-  const handleArm = () => {
-    // TODO: POST MAV_CMD_COMPONENT_ARM_DISARM (400), param1=1
-    console.log('Arm command (mock)')
+  const sendArmCommand = (arm: boolean) => {
+    fetch('http://localhost:8088/mavlink', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        header: { system_id: 255, component_id: 0, sequence: 0 },
+        message: {
+          type: 'COMMAND_LONG',
+          param1: arm ? 1 : 0,
+          param2: 0, param3: 0, param4: 0, param5: 0, param6: 0, param7: 0,
+          command: { type: 'MAV_CMD_COMPONENT_ARM_DISARM' },
+          target_system: 1,
+          target_component: 1,
+          confirmation: 0,
+        },
+      }),
+    }).catch(console.error)
   }
 
-  const handleDisarm = () => {
-    // TODO: POST MAV_CMD_COMPONENT_ARM_DISARM (400), param1=0
-    console.log('Disarm command (mock)')
-  }
+  const handleArm = () => sendArmCommand(true)
+  const handleDisarm = () => sendArmCommand(false)
 
   const isCard = phase === 'idle' || phase === 'ready'
   const isExpanded = phase === 'transitioning' || phase === 'active'
@@ -57,12 +71,16 @@ function App() {
   return (
     <div className="h-screen w-screen bg-(--color-background) p-1">
       <div ref={containerRef} className="size-full relative">
-        {/* Map — full size, revealed via clip-path from card position */}
-        {isExpanded && (
+        {/* Map — mounted early for preloading, hidden until transition */}
+        {telemetry && (
           <motion.div
             className="absolute inset-0"
-            initial={{ clipPath: cardClipRef.current }}
-            animate={{ clipPath: 'inset(0px round 8px)' }}
+            initial={false}
+            animate={
+              isExpanded
+                ? { clipPath: 'inset(0px round 8px)', opacity: 1 }
+                : { clipPath: cardClipRef.current, opacity: 0 }
+            }
             transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
             onAnimationComplete={() => {
               if (phase === 'transitioning') onTransitionComplete()
@@ -76,23 +94,17 @@ function App() {
           </motion.div>
         )}
 
-        {/* Intro card — glass + content, fades out via AnimatePresence */}
-        <AnimatePresence>
-          {isCard && (
-            <motion.div
-              className="absolute inset-0 flex items-center justify-center z-[1]"
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+        {/* Intro card — unmounts instantly on begin */}
+        {isCard && (
+          <div className="absolute inset-0 flex items-center justify-center z-[1]">
+            <div
+              ref={cardRef}
+              className="w-72 backdrop-blur-sm bg-(--gray-a2) border border-white/10 shadow-lg rounded-xl"
             >
-              <div
-                ref={cardRef}
-                className="w-72 backdrop-blur-sm bg-(--gray-a2) border border-white/10 shadow-lg rounded-xl"
-              >
-                <IntroCard phase={phase} onBegin={beginTransition} />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <IntroCard phase={phase} onBegin={beginTransition} />
+            </div>
+          </div>
+        )}
 
         {/* Telemetry panel — enters as soon as transition starts */}
         {isExpanded && (

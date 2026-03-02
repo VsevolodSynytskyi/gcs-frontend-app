@@ -36,8 +36,7 @@ export function IntroCard({ phase, onBegin }: IntroCardProps) {
         size="3"
         color="green"
         className="w-full cursor-pointer"
-        // TODO: revert to disabled={!connected}
-        disabled={false}
+        disabled={!connected}
         onClick={onBegin}
       >
         Begin
