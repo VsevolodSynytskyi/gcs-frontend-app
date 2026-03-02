@@ -17,7 +17,7 @@ export function BatteryCard({ percentage }: BatteryCardProps) {
       <div className="flex flex-col gap-2">
         <div className="flex justify-between items-center">
           <span className="text-xs text-muted-foreground uppercase tracking-wider">Battery</span>
-          <span className="text-base font-bold text-foreground font-mono">
+          <span className="text-base text-foreground font-mono">
             {percentage}%
           </span>
         </div>

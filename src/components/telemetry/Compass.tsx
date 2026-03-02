@@ -85,7 +85,7 @@ export function Compass({ heading, groundSpeed }: CompassProps) {
               y={100 + labelR * Math.sin(rad)}
               textAnchor="middle"
               dominantBaseline="central"
-              className="fill-foreground text-xs font-bold font-mono"
+              className="fill-foreground text-xs font-mono"
             >
               {heading.toFixed(0)}&deg;
             </text>
@@ -99,7 +99,7 @@ export function Compass({ heading, groundSpeed }: CompassProps) {
         y="93"
         textAnchor="middle"
         dominantBaseline="central"
-        className="fill-foreground text-2xl font-bold"
+        className="fill-foreground text-2xl"
       >
         {groundSpeed.toFixed(1)}
       </text>
