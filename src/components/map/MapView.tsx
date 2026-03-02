@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
-import { LayersControl, MapContainer, Marker, TileLayer, useMap, useMapEvent } from 'react-leaflet'
+import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import type { MapLayer } from './LayerSwitcher'
 
 const droneIcon = L.divIcon({
   html: '✈',
@@ -9,6 +10,21 @@ const droneIcon = L.divIcon({
   iconSize: [24, 24],
   iconAnchor: [12, 12],
 })
+
+const TILE_LAYERS: Record<MapLayer, { url: string; attribution: string }> = {
+  Dark: {
+    url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    attribution: '&copy; OpenStreetMap, &copy; CARTO',
+  },
+  Street: {
+    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    attribution: '&copy; OpenStreetMap',
+  },
+  Satellite: {
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    attribution: '&copy; Esri',
+  },
+}
 
 function MapUpdater({ position }: { position: [number, number] }) {
   const map = useMap()
@@ -29,20 +45,15 @@ function MapResizeObserver() {
   return null
 }
 
-function LayerChangeListener({ onLayerChange }: { onLayerChange: (name: string) => void }) {
-  useMapEvent('baselayerchange', (e) => {
-    onLayerChange(e.name)
-  })
-  return null
-}
-
 interface MapViewProps {
   position: [number, number]
   hasTelemetry: boolean
-  onLayerChange?: (layerName: string) => void
+  activeLayer: MapLayer
 }
 
-export function MapView({ position, hasTelemetry, onLayerChange }: MapViewProps) {
+export function MapView({ position, hasTelemetry, activeLayer }: MapViewProps) {
+  const layer = TILE_LAYERS[activeLayer]
+
   return (
     <MapContainer
       center={position}
@@ -50,28 +61,8 @@ export function MapView({ position, hasTelemetry, onLayerChange }: MapViewProps)
       className="size-full"
       zoomControl={false}
     >
-      <LayersControl position="topright">
-        <LayersControl.BaseLayer name="Dark" checked>
-          <TileLayer
-            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-            attribution="&copy; OpenStreetMap, &copy; CARTO"
-          />
-        </LayersControl.BaseLayer>
-        <LayersControl.BaseLayer name="Street">
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution="&copy; OpenStreetMap"
-          />
-        </LayersControl.BaseLayer>
-        <LayersControl.BaseLayer name="Satellite">
-          <TileLayer
-            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-            attribution="&copy; Esri"
-          />
-        </LayersControl.BaseLayer>
-      </LayersControl>
+      <TileLayer key={activeLayer} url={layer.url} attribution={layer.attribution} />
       <MapResizeObserver />
-      {onLayerChange && <LayerChangeListener onLayerChange={onLayerChange} />}
       {hasTelemetry && (
         <>
           <Marker position={position} icon={droneIcon} />
