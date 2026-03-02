@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { LayersControl, MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
+import { LayersControl, MapContainer, Marker, TileLayer, useMap, useMapEvent } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
@@ -18,12 +18,20 @@ function MapUpdater({ position }: { position: [number, number] }) {
   return null
 }
 
+function LayerChangeListener({ onLayerChange }: { onLayerChange: (name: string) => void }) {
+  useMapEvent('baselayerchange', (e) => {
+    onLayerChange(e.name)
+  })
+  return null
+}
+
 interface MapViewProps {
   position: [number, number]
   hasTelemetry: boolean
+  onLayerChange?: (layerName: string) => void
 }
 
-export function MapView({ position, hasTelemetry }: MapViewProps) {
+export function MapView({ position, hasTelemetry, onLayerChange }: MapViewProps) {
   return (
     <MapContainer
       center={position}
@@ -51,6 +59,7 @@ export function MapView({ position, hasTelemetry }: MapViewProps) {
           />
         </LayersControl.BaseLayer>
       </LayersControl>
+      {onLayerChange && <LayerChangeListener onLayerChange={onLayerChange} />}
       {hasTelemetry && (
         <>
           <Marker position={position} icon={droneIcon} />

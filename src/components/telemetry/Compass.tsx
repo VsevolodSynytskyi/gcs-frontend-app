@@ -18,7 +18,7 @@ export function Compass({ heading, groundSpeed }: CompassProps) {
   return (
     <svg viewBox="12 12 176 176" className="w-full h-auto">
       {/* Outer ring */}
-      <circle cx="100" cy="100" r="85" className="fill-none stroke-(--gray-6)" strokeWidth="2" />
+      <circle cx="100" cy="100" r="85" className="fill-none stroke-(--gray-a6)" strokeWidth="1" />
 
       {/* Minor ticks every 30deg */}
       {TICK_ANGLES.map((angle) => {
@@ -36,8 +36,8 @@ export function Compass({ heading, groundSpeed }: CompassProps) {
             y1={y1}
             x2={x2}
             y2={y2}
-            className={isCardinal ? 'stroke-(--gray-8)' : 'stroke-(--gray-6)'}
-            strokeWidth={isCardinal ? 2 : 1}
+            className="stroke-(--gray-a6)"
+            strokeWidth={1}
           />
         )
       })}

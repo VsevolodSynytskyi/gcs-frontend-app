@@ -53,7 +53,7 @@ export function StatusCard({ connectionStatus, armed, onArm, onDisarm }: StatusC
 
           <div>
             <Text size="1" color="gray" className="uppercase tracking-wider block mb-1">Status</Text>
-            <Badge color={armed ? 'red' : 'gray'} variant="soft">
+            <Badge color={armed ? 'green' : 'red'} variant="soft">
               {armed ? 'Armed' : 'Disarmed'}
             </Badge>
           </div>
@@ -65,7 +65,7 @@ export function StatusCard({ connectionStatus, armed, onArm, onDisarm }: StatusC
           <Button
             size="2"
             variant="solid"
-            color="red"
+            color="green"
             className="w-full cursor-pointer"
             onClick={onArm}
           >
@@ -73,8 +73,7 @@ export function StatusCard({ connectionStatus, armed, onArm, onDisarm }: StatusC
           </Button>
           <Button
             size="2"
-            variant="outline"
-            color="gray"
+            color="red"
             className="w-full cursor-pointer"
             onClick={onDisarm}
           >

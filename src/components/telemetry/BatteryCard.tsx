@@ -22,7 +22,7 @@ export function BatteryCard({ percentage }: BatteryCardProps) {
             {percentage}%
           </Text>
         </Flex>
-        <div className="h-2.5 w-full rounded-full bg-(--gray-3) overflow-hidden">
+        <div className="h-2.5 w-full rounded-full bg-(--gray-a3) overflow-hidden">
           <motion.div
             className={`h-full rounded-full ${barColor(percentage)}`}
             animate={{ width: `${Math.max(0, Math.min(100, percentage))}%` }}
