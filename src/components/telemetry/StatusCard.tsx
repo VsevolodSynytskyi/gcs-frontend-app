@@ -23,6 +23,7 @@ const connectionLabel: Record<ConnectionStatus, string> = {
 }
 
 export function StatusCard({ connectionStatus, armed, onArm, onDisarm }: StatusCardProps) {
+  const connected = connectionStatus === 'connected'
   return (
     <GlassCard>
       <Flex direction="column" gap="3">
@@ -67,6 +68,7 @@ export function StatusCard({ connectionStatus, armed, onArm, onDisarm }: StatusC
             variant="solid"
             color="green"
             className="w-full cursor-pointer"
+            disabled={!connected || armed}
             onClick={onArm}
           >
             Arm
@@ -75,6 +77,7 @@ export function StatusCard({ connectionStatus, armed, onArm, onDisarm }: StatusC
             size="2"
             color="red"
             className="w-full cursor-pointer"
+            disabled={!connected || !armed}
             onClick={onDisarm}
           >
             Disarm
