@@ -15,7 +15,16 @@ function App() {
   const position = useLastPosition(telemetry)
 
   const isExpanded = phase === 'transitioning' || phase === 'active'
-  const panelAppearance = mapLayer === 'Street' ? 'light' : 'dark' as const
+  let panelAppearance: 'dark' | 'light'
+  switch (mapLayer) {
+    case 'Street':
+      panelAppearance = 'light'
+      break
+    case 'Dark':
+    case 'Satellite':
+      panelAppearance = 'dark'
+      break
+  }
 
   return (
     <div className="h-screen w-screen bg-(--color-background) p-1">
