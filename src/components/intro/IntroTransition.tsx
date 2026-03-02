@@ -28,6 +28,7 @@ export function IntroTransition({
 
   const isCard = phase === 'idle' || phase === 'ready'
   const isExpanded = phase === 'transitioning' || phase === 'active'
+  const showRipple = phase !== 'active'
 
   useEffect(() => {
     if (isCard && containerRef.current && cardRef.current) {
@@ -45,7 +46,7 @@ export function IntroTransition({
     <div ref={containerRef} className="size-full relative">
       {telemetry && (
         <motion.div
-          className={`absolute inset-0 border border-white/10 rounded-lg overflow-hidden ${isCard ? 'invisible' : 'visible'}`}
+          className={`absolute inset-0 z-[4] border border-white/10 rounded-lg overflow-hidden ${isCard ? 'invisible' : 'visible'}`}
           initial={false}
           animate={
             isExpanded
@@ -61,20 +62,21 @@ export function IntroTransition({
         </motion.div>
       )}
 
+      {showRipple && (
+        <div className="absolute inset-0 overflow-hidden">
+          <BackgroundRippleEffect rows={20} />
+        </div>
+      )}
+
       {isCard && (
-        <>
-          <div className="absolute inset-0 overflow-hidden">
-            <BackgroundRippleEffect rows={20} />
+        <div className="absolute inset-0 flex items-center justify-center z-[5] pointer-events-none">
+          <div
+            ref={cardRef}
+            className="w-72 backdrop-blur-sm bg-foreground/5 border border-white/10 shadow-lg rounded-xl pointer-events-auto"
+          >
+            <IntroCard phase={phase} onBegin={onBegin} />
           </div>
-          <div className="absolute inset-0 flex items-center justify-center z-[5] pointer-events-none">
-            <div
-              ref={cardRef}
-              className="w-72 backdrop-blur-sm bg-foreground/5 border border-white/10 shadow-lg rounded-xl pointer-events-auto"
-            >
-              <IntroCard phase={phase} onBegin={onBegin} />
-            </div>
-          </div>
-        </>
+        </div>
       )}
 
       {children}
