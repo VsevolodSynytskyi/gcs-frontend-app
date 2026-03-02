@@ -135,6 +135,22 @@
   --ring: oklch(0.708 0 0);
 }
 
+@keyframes cell-ripple {
+  0% {
+    opacity: 0.4;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.4;
+  }
+}
+
+@theme inline {
+  --animate-cell-ripple: cell-ripple var(--duration) ease-out var(--delay);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

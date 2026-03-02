@@ -3,6 +3,7 @@ import { motion } from 'motion/react'
 import type { AppPhase } from '../../hooks/useAppPhase'
 import type { Telemetry } from '../../hooks/useTelemetry'
 import { IntroCard } from './IntroCard'
+import { BackgroundRippleEffect } from '../ui/background-ripple-effect'
 
 interface IntroTransitionProps {
   phase: AppPhase
@@ -61,14 +62,19 @@ export function IntroTransition({
       )}
 
       {isCard && (
-        <div className="absolute inset-0 flex items-center justify-center z-[1]">
-          <div
-            ref={cardRef}
-            className="w-72 backdrop-blur-sm bg-foreground/5 border border-white/10 shadow-lg rounded-xl"
-          >
-            <IntroCard phase={phase} onBegin={onBegin} />
+        <>
+          <div className="absolute inset-0 overflow-hidden">
+            <BackgroundRippleEffect rows={20} />
           </div>
-        </div>
+          <div className="absolute inset-0 flex items-center justify-center z-[5] pointer-events-none">
+            <div
+              ref={cardRef}
+              className="w-72 backdrop-blur-sm bg-foreground/5 border border-white/10 shadow-lg rounded-xl pointer-events-auto"
+            >
+              <IntroCard phase={phase} onBegin={onBegin} />
+            </div>
+          </div>
+        </>
       )}
 
       {children}
