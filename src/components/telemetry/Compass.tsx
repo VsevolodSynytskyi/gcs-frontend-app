@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 
 interface CompassProps {
@@ -14,7 +15,14 @@ const CARDINALS = [
 
 const TICK_ANGLES = Array.from({ length: 12 }, (_, i) => i * 30)
 
-export function Compass({ heading, groundSpeed }: CompassProps) {
+export function Compass({ heading: _heading, groundSpeed }: CompassProps) {
+  // TODO: remove test heading cycle
+  const [heading, setHeading] = useState(0)
+  useEffect(() => {
+    const id = setInterval(() => setHeading((h) => (h + 1) % 360), 100)
+    return () => clearInterval(id)
+  }, [])
+
   return (
     <svg viewBox="12 12 176 176" className="w-full h-auto">
       {/* Outer ring */}
@@ -62,14 +70,20 @@ export function Compass({ heading, groundSpeed }: CompassProps) {
         )
       })}
 
-      {/* Heading arrow — rotates around center */}
-      <motion.g
-        animate={{ rotate: heading }}
-        transition={{ type: 'spring', stiffness: 80, damping: 15 }}
-        style={{ transformOrigin: '100px 100px' }}
-      >
-        <polygon points="100,18 95,28 105,28" className="fill-(--accent-9)" />
-      </motion.g>
+      {/* Heading line — computed endpoint */}
+      {(() => {
+        const rad = (heading - 90) * (Math.PI / 180)
+        return (
+          <line
+            x1="100"
+            y1="100"
+            x2={100 + 85 * Math.cos(rad)}
+            y2={100 + 85 * Math.sin(rad)}
+            className="stroke-(--accent-9)"
+            strokeWidth="2"
+          />
+        )
+      })()}
 
       {/* Center: ground speed */}
       <text
@@ -97,7 +111,7 @@ export function Compass({ heading, groundSpeed }: CompassProps) {
         y="128"
         textAnchor="middle"
         dominantBaseline="central"
-        className="fill-(--gray-11) text-xs font-mono"
+        className="fill-(--gray-12) text-xs font-bold font-mono"
       >
         {heading.toFixed(0)}&deg;
       </text>
