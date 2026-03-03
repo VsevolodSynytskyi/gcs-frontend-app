@@ -9,7 +9,9 @@ export function LayerSwitcher() {
 
   return (
     <div className="absolute bottom-3 left-3 z-1000">
-      <div className={appearance === 'dark' ? 'dark' : 'light'}>
+      <div
+        className={`${appearance === 'dark' ? 'dark' : 'light'} text-foreground`}
+      >
         <GlassCard className="p-1">
           <ToggleGroup
             type="single"

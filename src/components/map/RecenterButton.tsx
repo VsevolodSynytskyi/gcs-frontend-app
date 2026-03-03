@@ -19,7 +19,9 @@ export function RecenterButton({ position }: RecenterButtonProps) {
 
   return (
     <div className="absolute top-1/2 right-3 z-1000 -translate-y-1/2">
-      <div className={appearance === 'dark' ? 'dark' : 'light'}>
+      <div
+        className={`${appearance === 'dark' ? 'dark' : 'light'} text-foreground`}
+      >
         <GlassCard className="p-1">
           <Tooltip content="Re-center on drone" side="left">
             <Button size="icon" onClick={handleClick}>
