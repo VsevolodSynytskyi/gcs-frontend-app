@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { addToast } from '@/components/ui/Toaster'
 
 const WS_URL = 'ws://localhost:8088/ws/mavlink?filter=STATUSTEXT|COMMAND_ACK'
 const MAX_RECONNECT_DELAY = 16000
@@ -35,6 +36,8 @@ const ACK_RESULTS: Record<number, string> = {
 function logStatusText(severity: number, text: string) {
   const label = SEVERITY_LABELS[severity] ?? 'UNKNOWN'
   const formatted = `[${label}] ${text}`
+
+  addToast(formatted)
 
   switch (true) {
     case severity <= 3:
@@ -74,6 +77,8 @@ function logCommandAck(msg: Record<string, unknown>) {
   }
 
   const formatted = `[COMMAND_ACK] ${cmdName}: ${resultName}`
+
+  addToast(formatted)
 
   if (resultName === 'ACCEPTED' || resultName === 'IN_PROGRESS') {
     console.log(formatted)

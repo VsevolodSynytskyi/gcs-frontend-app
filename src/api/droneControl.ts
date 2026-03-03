@@ -36,7 +36,10 @@ async function sendCommand(command: string, params: number[] = []) {
       throw new Error(`Command ${command} failed (${response.status})`)
     }
   } catch (error) {
-    addToast(error instanceof Error ? error.message : 'Unknown command error')
+    addToast(
+      error instanceof Error ? error.message : 'Unknown command error',
+      'error',
+    )
     throw error
   }
 }
@@ -51,7 +54,7 @@ export async function disarm() {
 }
 
 // MAV_CMD_NAV_TAKEOFF: param7 = altitude in meters
-export async function takeoff(altitude: number = 10) {
+export async function takeoff(altitude: number = 3) {
   await sendCommand('MAV_CMD_NAV_TAKEOFF', [0, 0, 0, 0, 0, 0, altitude])
 }
 
@@ -71,7 +74,7 @@ export async function setModeGuided() {
   await sendCommand('MAV_CMD_DO_SET_MODE', [1, 4])
 }
 
-export async function armAndTakeoff(altitude: number = 10) {
+export async function armAndTakeoff(altitude: number = 3) {
   await setModeGuided()
   await arm()
   await takeoff(altitude)
