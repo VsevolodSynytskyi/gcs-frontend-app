@@ -4,7 +4,6 @@ import { Crosshair, Minus, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tooltip } from '@/components/ui/tooltip'
 import { GlassCard } from '@/components/ui/GlassCard.tsx'
-import { Perspective3DContainer } from '@/components/ui/Perspective3DContainer.tsx'
 
 interface MapControlsProps {
   map: Map
@@ -25,24 +24,22 @@ export function MapControls({ map, position }: MapControlsProps) {
   }, [map])
 
   return (
-    <Perspective3DContainer>
-        <GlassCard className="flex flex-col gap-1 p-1">
-          <Tooltip content="Re-center on drone" side="left">
-            <Button size="icon" onClick={handleRecenter}>
-              <Crosshair size={18} />
-            </Button>
-          </Tooltip>
-          <Tooltip content="Zoom in" side="left">
-            <Button size="icon" onClick={handleZoomIn}>
-              <Plus size={18} />
-            </Button>
-          </Tooltip>
-          <Tooltip content="Zoom out" side="left">
-            <Button size="icon" onClick={handleZoomOut}>
-              <Minus size={18} />
-            </Button>
-          </Tooltip>
-        </GlassCard>
-    </Perspective3DContainer>
+    <GlassCard className="flex flex-col gap-1 p-1">
+      <Tooltip content="Re-center on drone" side="left">
+        <Button size="icon" onClick={handleRecenter}>
+          <Crosshair size={18} />
+        </Button>
+      </Tooltip>
+      <Tooltip content="Zoom in" side="left">
+        <Button size="icon" onClick={handleZoomIn}>
+          <Plus size={18} />
+        </Button>
+      </Tooltip>
+      <Tooltip content="Zoom out" side="left">
+        <Button size="icon" onClick={handleZoomOut}>
+          <Minus size={18} />
+        </Button>
+      </Tooltip>
+    </GlassCard>
   )
 }

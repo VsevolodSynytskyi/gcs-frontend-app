@@ -32,7 +32,7 @@ function App() {
           <>
             <LayerSwitcher />
             {map && (
-              <div className="absolute top-1/2 right-3 z-1000 -translate-y-1/2">
+              <div className="absolute inset-y-0 right-3 z-1000 flex items-center">
                 <MapControls map={map} position={position} />
               </div>
             )}
