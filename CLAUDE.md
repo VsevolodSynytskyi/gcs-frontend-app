@@ -30,6 +30,7 @@ GCS (Ground Control Station) frontend — a web app for real-time UAV/drone tele
 - Functional components only, no class components.
 - Use named exports for components (except the main App which uses default export).
 - TypeScript strict mode is enabled.
+- Prefer `switch` statements over ternaries/`if` chains for multi-branch conditionals (readability).
 - Place component files in `src/` — organize into subdirectories as the project grows (e.g., `src/components/`, `src/hooks/`).
 
 ### Project Structure

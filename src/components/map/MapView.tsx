@@ -1,20 +1,18 @@
 import { MapContainer, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import type { MapLayer } from './LayerSwitcher'
+import { useTelemetry } from '../../context/TelemetryContext'
+import { useAppearance } from '../../context/AppearanceContext'
+import { useLastPosition } from '../../hooks/useLastPosition'
 import { TILE_LAYERS } from './tileLayers'
 import { DroneMarker } from './DroneMarker'
 import { RecenterButton } from './RecenterButton'
 import { MapResizeObserver } from './MapResizeObserver'
 
-interface MapViewProps {
-  position: [number, number]
-  hasTelemetry: boolean
-  activeLayer: MapLayer
-  heading: number
-}
-
-export function MapView({ position, hasTelemetry, activeLayer, heading }: MapViewProps) {
-  const layer = TILE_LAYERS[activeLayer]
+export function MapView() {
+  const { telemetry } = useTelemetry()
+  const { mapLayer } = useAppearance()
+  const position = useLastPosition(telemetry)
+  const layer = TILE_LAYERS[mapLayer]
 
   return (
     <MapContainer
@@ -23,9 +21,9 @@ export function MapView({ position, hasTelemetry, activeLayer, heading }: MapVie
       className="size-full"
       zoomControl={false}
     >
-      <TileLayer key={activeLayer} url={layer.url} attribution={layer.attribution} />
+      <TileLayer key={mapLayer} url={layer.url} attribution={layer.attribution} />
       <MapResizeObserver />
-      {hasTelemetry && <DroneMarker position={position} heading={heading} />}
+      {telemetry && <DroneMarker position={position} heading={telemetry.heading} />}
       <RecenterButton position={position} />
     </MapContainer>
   )

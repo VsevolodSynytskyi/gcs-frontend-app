@@ -1,13 +1,12 @@
 import { useRef, useEffect, type ReactNode } from 'react'
 import { motion } from 'motion/react'
 import type { AppPhase } from '../../hooks/useAppPhase'
-import type { Telemetry } from '../../hooks/useTelemetry'
+import { useTelemetry } from '../../context/TelemetryContext'
 import { IntroCard } from './IntroCard'
 import { BackgroundRippleEffect } from '../ui/background-ripple-effect'
 
 interface IntroTransitionProps {
   phase: AppPhase
-  telemetry: Telemetry | null
   onBegin: () => void
   onTransitionComplete: () => void
   map: ReactNode
@@ -16,12 +15,12 @@ interface IntroTransitionProps {
 
 export function IntroTransition({
   phase,
-  telemetry,
   onBegin,
   onTransitionComplete,
   map,
   children,
 }: IntroTransitionProps) {
+  const { telemetry } = useTelemetry()
   const containerRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
   const cardClipRef = useRef('inset(30% 30% 30% 30% round 12px)')

@@ -1,20 +1,16 @@
 import { motion } from 'motion/react'
-import type { ConnectionStatus, Telemetry } from '../../hooks/useTelemetry'
+import { useTelemetry } from '../../context/TelemetryContext'
+import { useAppearance } from '../../context/AppearanceContext'
+import { arm, disarm } from '../../api/droneControl'
 import { StatusCard } from './StatusCard'
 import { BatteryCard } from './BatteryCard'
 import { NavigationCard } from './NavigationCard'
 import { PositionCard } from './PositionCard'
 import { Perspective3DContainer } from '../ui/Perspective3DContainer'
 
-interface TelemetryPanelProps {
-  telemetry: Telemetry | null
-  connectionStatus: ConnectionStatus
-  onArm: () => void
-  onDisarm: () => void
-  appearance: 'dark' | 'light'
-}
-
-export function TelemetryPanel({ telemetry, connectionStatus, onArm, onDisarm, appearance }: TelemetryPanelProps) {
+export function TelemetryPanel() {
+  const { telemetry, connectionStatus } = useTelemetry()
+  const { appearance } = useAppearance()
   return (
     <motion.div
       initial={{ x: 40 }}
@@ -32,8 +28,8 @@ export function TelemetryPanel({ telemetry, connectionStatus, onArm, onDisarm, a
             <StatusCard
               connectionStatus={connectionStatus}
               armed={telemetry?.armed ?? false}
-              onArm={onArm}
-              onDisarm={onDisarm}
+              onArm={arm}
+              onDisarm={disarm}
             />
           </motion.div>
 

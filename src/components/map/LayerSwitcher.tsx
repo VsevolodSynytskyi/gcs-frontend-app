@@ -1,22 +1,19 @@
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { useAppearance } from '../../context/AppearanceContext'
 
 export type MapLayer = 'Dark' | 'Street' | 'Satellite'
 
-interface LayerSwitcherProps {
-  activeLayer: MapLayer
-  onLayerChange: (layer: MapLayer) => void
-  appearance: 'dark' | 'light'
-}
+export function LayerSwitcher() {
+  const { appearance, mapLayer, setMapLayer } = useAppearance()
 
-export function LayerSwitcher({ activeLayer, onLayerChange, appearance }: LayerSwitcherProps) {
   return (
     <div className="absolute bottom-3 left-3 z-[1000]">
       <div className={appearance === 'dark' ? 'dark' : 'light'}>
         <div className="backdrop-blur-sm bg-background/40 border border-white/20 [.light_&]:border-white/50 rounded-xl shadow-sm [.light_&]:shadow-none p-1">
           <ToggleGroup
             type="single"
-            value={activeLayer}
-            onValueChange={(value) => { if (value) onLayerChange(value as MapLayer) }}
+            value={mapLayer}
+            onValueChange={(value) => { if (value) setMapLayer(value as MapLayer) }}
             className="gap-0"
           >
             <ToggleGroupItem value="Dark" className="text-xs px-3 py-1 h-7 rounded-md text-muted-foreground hover:bg-foreground/5 hover:text-foreground data-[state=on]:bg-background data-[state=on]:text-foreground">
