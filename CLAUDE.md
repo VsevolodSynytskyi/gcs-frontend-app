@@ -20,6 +20,7 @@ GCS (Ground Control Station) frontend — a web app for real-time UAV/drone tele
 - Do NOT write custom CSS in `index.css` or create new `.css` files. The only CSS file is `src/index.css` which contains the Tailwind import.
 - Use Radix UI components for interactive UI elements (dialogs, dropdowns, tooltips, etc.).
 - Dark theme is the default (`<Theme appearance="dark">`).
+- Prefer named Tailwind classes over arbitrary values (e.g., `z-5` over `z-[5]`).
 
 ### Animations
 - Use the `motion` library for all animations and transitions.
@@ -32,6 +33,15 @@ GCS (Ground Control Station) frontend — a web app for real-time UAV/drone tele
 - TypeScript strict mode is enabled.
 - Prefer `switch` statements over ternaries/`if` chains for multi-branch conditionals (readability).
 - Place component files in `src/` — organize into subdirectories as the project grows (e.g., `src/components/`, `src/hooks/`).
+
+### Formatting (Prettier)
+All code must follow the project's Prettier config (`.prettierrc.json`):
+- **No semicolons** — omit `;` at the end of statements.
+- **Single quotes** — use `'single quotes'` for strings (JSX attributes too).
+- **Trailing commas** — always include trailing commas in multi-line lists, objects, parameters, etc.
+- **2-space indentation**.
+- **80 character line width** — break lines that exceed 80 characters.
+- Tailwind classes are auto-sorted by `prettier-plugin-tailwindcss`.
 
 ### Project Structure
 ```
@@ -48,4 +58,6 @@ src/
 - `npm run dev` — start dev server
 - `npm run build` — type-check + production build
 - `npm run lint` — ESLint
+- `npm run format` — format all files with Prettier
+- `npm run format:check` — check formatting without writing (CI)
 - `npm run preview` — preview production build
