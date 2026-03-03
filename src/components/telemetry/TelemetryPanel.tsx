@@ -1,6 +1,5 @@
 import { motion } from 'motion/react'
 import { useTelemetry } from '@/context/TelemetryContext'
-import { useAppearance } from '@/context/AppearanceContext'
 import { StatusCard } from './StatusCard'
 import { BatteryCard } from './BatteryCard'
 import { NavigationCard } from './NavigationCard'
@@ -9,7 +8,6 @@ import { Perspective3DContainer } from '@/components/ui/Perspective3DContainer'
 
 export function TelemetryPanel() {
   const { telemetry } = useTelemetry()
-  const { appearance } = useAppearance()
   return (
     <motion.div
       initial={{ x: 40 }}
@@ -18,9 +16,7 @@ export function TelemetryPanel() {
       className="absolute top-1/2 left-4 z-1000 w-72 -translate-y-1/2"
     >
       <Perspective3DContainer>
-        <div
-          className={`flex flex-col gap-1 ${appearance === 'dark' ? 'dark' : 'light'}`}
-        >
+        <div className="flex flex-col gap-1">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

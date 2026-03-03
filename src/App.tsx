@@ -1,5 +1,6 @@
 import { useTelemetry } from '@/context/TelemetryContext'
 import { useAppPhase } from '@/hooks/useAppPhase'
+import { useLogStatusText } from '@/hooks/useLogStatusText'
 import { MapView } from '@/components/map/MapView'
 import { LayerSwitcher } from '@/components/map/LayerSwitcher'
 import { TelemetryPanel } from '@/components/telemetry/TelemetryPanel'
@@ -11,6 +12,7 @@ function App() {
   const { phase, beginTransition, onTransitionComplete } =
     useAppPhase(connectionStatus)
   const isViewExpanded = phase === 'transitioning' || phase === 'active'
+  useLogStatusText(connectionStatus === 'connected')
 
   return (
     <div className="h-screen w-screen bg-(--color-background) p-1">

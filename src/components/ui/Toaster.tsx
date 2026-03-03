@@ -1,8 +1,6 @@
 import { useSyncExternalStore } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { CircleAlert } from 'lucide-react'
-import { useAppearance } from '@/context/AppearanceContext'
-
 type Toast = {
   id: number
   message: string
@@ -42,13 +40,10 @@ function getSnapshot() {
 }
 
 export function Toaster() {
-  const { appearance } = useAppearance()
   const items = useSyncExternalStore(subscribe, getSnapshot)
 
   return (
-    <div
-      className={`${appearance === 'dark' ? 'dark' : 'light'} fixed right-4 bottom-4 z-[2000] flex flex-col gap-2`}
-    >
+    <div className="fixed right-4 bottom-4 z-[2000] flex flex-col gap-2">
       <AnimatePresence>
         {items.map((toast) => (
           <motion.div

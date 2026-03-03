@@ -5,14 +5,11 @@ import { useAppearance } from '@/context/AppearanceContext'
 export type MapLayer = 'Dark' | 'Street' | 'Satellite'
 
 export function LayerSwitcher() {
-  const { appearance, mapLayer, setMapLayer } = useAppearance()
+  const { mapLayer, setMapLayer } = useAppearance()
 
   return (
-    <div className="absolute bottom-3 left-3 z-1000">
-      <div
-        className={`${appearance === 'dark' ? 'dark' : 'light'} text-foreground`}
-      >
-        <GlassCard className="p-1">
+    <div className="absolute bottom-3 left-3 z-1000 text-foreground">
+      <GlassCard className="p-1">
           <ToggleGroup
             type="single"
             variant="outline"
@@ -25,8 +22,7 @@ export function LayerSwitcher() {
             <ToggleGroupItem value="Street">Street</ToggleGroupItem>
             <ToggleGroupItem value="Satellite">Satellite</ToggleGroupItem>
           </ToggleGroup>
-        </GlassCard>
-      </div>
+      </GlassCard>
     </div>
   )
 }
