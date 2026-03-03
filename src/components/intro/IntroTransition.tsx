@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, type ReactNode } from 'react'
+import { type ReactNode, useEffect, useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import type { AppPhase } from '@/hooks/useAppPhase'
 import { useTelemetry } from '@/context/TelemetryContext'
@@ -42,10 +42,10 @@ export function IntroTransition({
   })
 
   return (
-    <div ref={containerRef} className="size-full relative">
+    <div ref={containerRef} className="relative size-full">
       {telemetry && (
         <motion.div
-          className={`absolute inset-0 z-4 border border-white/10 rounded-lg overflow-hidden ${isCard ? 'invisible' : 'visible'}`}
+          className={`absolute inset-0 z-4 overflow-hidden rounded-lg border border-white/10 ${isCard ? 'invisible' : 'visible'}`}
           initial={false}
           animate={
             isExpanded
@@ -68,11 +68,8 @@ export function IntroTransition({
       )}
 
       {isCard && (
-        <div className="absolute inset-0 flex items-center justify-center z-5 pointer-events-none">
-          <div
-            ref={cardRef}
-            className="w-72 backdrop-blur-sm bg-foreground/5 border border-white/10 shadow-lg rounded-xl pointer-events-auto"
-          >
+        <div className="pointer-events-none absolute inset-0 z-5 flex items-center justify-center">
+          <div ref={cardRef} className="pointer-events-auto w-72">
             <IntroCard phase={phase} onBegin={onBegin} />
           </div>
         </div>
