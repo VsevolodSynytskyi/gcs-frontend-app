@@ -33,6 +33,7 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
 
 export function useAppearance(): AppearanceContextValue {
   const ctx = useContext(AppearanceContext)
-  if (!ctx) throw new Error('useAppearance must be used within AppearanceProvider')
+  if (!ctx)
+    throw new Error('useAppearance must be used within AppearanceProvider')
   return ctx
 }

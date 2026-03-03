@@ -1,4 +1,5 @@
-const API_BASE = 'http://localhost:8088/mavlink/vehicles/1/components/1/messages'
+const API_BASE =
+  'http://localhost:8088/mavlink/vehicles/1/components/1/messages'
 
 export type ConnectionStatus = 'connected' | 'disconnected' | 'reconnecting'
 

@@ -21,9 +21,15 @@ export function MapView() {
       className="size-full"
       zoomControl={false}
     >
-      <TileLayer key={mapLayer} url={layer.url} attribution={layer.attribution} />
+      <TileLayer
+        key={mapLayer}
+        url={layer.url}
+        attribution={layer.attribution}
+      />
       <MapResizeObserver />
-      {telemetry && <DroneMarker position={position} heading={telemetry.heading} />}
+      {telemetry && (
+        <DroneMarker position={position} heading={telemetry.heading} />
+      )}
       <RecenterButton position={position} />
     </MapContainer>
   )

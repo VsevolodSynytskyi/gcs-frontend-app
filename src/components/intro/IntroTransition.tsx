@@ -1,9 +1,16 @@
 import { type ReactNode, useEffect, useRef, useState } from 'react'
-import { motion } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
 import type { AppPhase } from '@/hooks/useAppPhase'
 import { useTelemetry } from '@/context/TelemetryContext'
 import { IntroCard } from './IntroCard'
 import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect'
+
+const EXPAND_TRANSITION = {
+  duration: 0.6,
+  ease: [0.4, 0, 0.2, 1] as const,
+}
+const CLIP_EXPANDED = 'inset(0px round 8px)'
+const CLIP_DEFAULT = 'inset(30% 30% 30% 30% round 12px)'
 
 interface IntroTransitionProps {
   phase: AppPhase
@@ -23,11 +30,16 @@ export function IntroTransition({
   const { telemetry } = useTelemetry()
   const containerRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
-  const [cardClip, setCardClip] = useState('inset(30% 30% 30% 30% round 12px)')
+  const [cardClip, setCardClip] = useState(CLIP_DEFAULT)
+  const [showOverlay, setShowOverlay] = useState(true)
 
   const isCard = phase === 'idle' || phase === 'ready'
   const isExpanded = phase === 'transitioning' || phase === 'active'
   const showRipple = phase !== 'active'
+
+  useEffect(() => {
+    if (isCard) setShowOverlay(true)
+  }, [isCard])
 
   useEffect(() => {
     if (isCard && containerRef.current && cardRef.current) {
@@ -47,17 +59,29 @@ export function IntroTransition({
         <motion.div
           className={`absolute inset-0 z-4 overflow-hidden rounded-lg border border-white/10 ${isCard ? 'invisible' : 'visible'}`}
           initial={false}
-          animate={
-            isExpanded
-              ? { clipPath: 'inset(0px round 8px)' }
-              : { clipPath: cardClip }
-          }
-          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+          animate={{
+            clipPath: isExpanded ? CLIP_EXPANDED : cardClip,
+          }}
+          transition={EXPAND_TRANSITION}
           onAnimationComplete={() => {
             if (phase === 'transitioning') onTransitionComplete()
           }}
         >
           {map}
+          <AnimatePresence>
+            {showOverlay && (
+              <motion.div
+                className="absolute inset-0 z-[1001] rounded-lg bg-(--color-background)"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: isExpanded ? 0 : 1 }}
+                exit={{ opacity: 0 }}
+                transition={EXPAND_TRANSITION}
+                onAnimationComplete={() => {
+                  if (isExpanded) setShowOverlay(false)
+                }}
+              />
+            )}
+          </AnimatePresence>
         </motion.div>
       )}
 

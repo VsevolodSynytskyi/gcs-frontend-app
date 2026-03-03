@@ -10,10 +10,8 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default: 'bg-green-500/15 text-green-500 border-green-500/25',
-        secondary:
-          'bg-yellow-500/15 text-yellow-500 border-yellow-500/25',
-        destructive:
-          'bg-red-500/15 text-red-500 border-red-500/25',
+        secondary: 'bg-yellow-500/15 text-yellow-500 border-yellow-500/25',
+        destructive: 'bg-red-500/15 text-red-500 border-red-500/25',
         outline:
           'border-border text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
         ghost: '[a&]:hover:bg-accent [a&]:hover:text-accent-foreground',

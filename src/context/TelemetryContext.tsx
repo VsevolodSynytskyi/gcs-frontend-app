@@ -11,11 +11,16 @@ const TelemetryContext = createContext<TelemetryContextValue | null>(null)
 
 export function TelemetryProvider({ children }: { children: ReactNode }) {
   const value = useTelemetryHook()
-  return <TelemetryContext.Provider value={value}>{children}</TelemetryContext.Provider>
+  return (
+    <TelemetryContext.Provider value={value}>
+      {children}
+    </TelemetryContext.Provider>
+  )
 }
 
 export function useTelemetry(): TelemetryContextValue {
   const ctx = useContext(TelemetryContext)
-  if (!ctx) throw new Error('useTelemetry must be used within TelemetryProvider')
+  if (!ctx)
+    throw new Error('useTelemetry must be used within TelemetryProvider')
   return ctx
 }

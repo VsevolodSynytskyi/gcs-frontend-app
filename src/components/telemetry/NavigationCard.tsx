@@ -10,7 +10,12 @@ interface NavigationCardProps {
   verticalSpeed: number
 }
 
-export function NavigationCard({ heading, groundSpeed, altitude, verticalSpeed }: NavigationCardProps) {
+export function NavigationCard({
+  heading,
+  groundSpeed,
+  altitude,
+  verticalSpeed,
+}: NavigationCardProps) {
   return (
     <GlassCard>
       <Compass heading={heading} groundSpeed={groundSpeed} />
@@ -18,7 +23,8 @@ export function NavigationCard({ heading, groundSpeed, altitude, verticalSpeed }
       <div className="grid grid-cols-2 gap-4">
         <StatItem label="Altitude">{altitude.toFixed(1)} m</StatItem>
         <StatItem label="Vertical Speed">
-          {verticalSpeed > 0 ? '+' : ''}{verticalSpeed.toFixed(1)} m/s
+          {verticalSpeed > 0 ? '+' : ''}
+          {verticalSpeed.toFixed(1)} m/s
         </StatItem>
       </div>
     </GlassCard>

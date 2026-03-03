@@ -15,11 +15,15 @@ export function BatteryCard({ percentage }: BatteryCardProps) {
   return (
     <GlassCard>
       <div className="flex flex-col gap-2">
-        <div className="flex justify-between items-center">
-          <span className="text-xs text-muted-foreground uppercase tracking-wider">Battery</span>
-          <span className="text-base text-foreground font-mono">{percentage}%</span>
+        <div className="flex items-center justify-between">
+          <span className="text-muted-foreground text-xs tracking-wider uppercase">
+            Battery
+          </span>
+          <span className="text-foreground font-mono text-base">
+            {percentage}%
+          </span>
         </div>
-        <div className="h-2.5 w-full rounded-full bg-foreground/10 overflow-hidden">
+        <div className="bg-foreground/10 h-2.5 w-full overflow-hidden rounded-full">
           <motion.div
             className={`h-full rounded-full ${barColor(percentage)}`}
             initial={false}

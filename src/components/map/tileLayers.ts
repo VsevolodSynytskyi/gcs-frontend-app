@@ -1,6 +1,9 @@
 import type { MapLayer } from './LayerSwitcher'
 
-export const TILE_LAYERS: Record<MapLayer, { url: string; attribution: string }> = {
+export const TILE_LAYERS: Record<
+  MapLayer,
+  { url: string; attribution: string }
+> = {
   Dark: {
     url: 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png',
     attribution: '&copy; OpenStreetMap, &copy; Stadia Maps',

@@ -16,6 +16,7 @@ GCS (Ground Control Station) frontend — a web app for real-time UAV/drone tele
 ## Conventions
 
 ### Styling
+
 - Use **Tailwind utility classes** for all styling. No inline `style={}` props except where required by third-party libs (e.g., Leaflet).
 - Do NOT write custom CSS in `index.css` or create new `.css` files. The only CSS file is `src/index.css` which contains the Tailwind import.
 - Use Radix UI components for interactive UI elements (dialogs, dropdowns, tooltips, etc.).
@@ -23,11 +24,13 @@ GCS (Ground Control Station) frontend — a web app for real-time UAV/drone tele
 - Prefer named Tailwind classes over arbitrary values (e.g., `z-5` over `z-[5]`).
 
 ### Animations
+
 - Use the `motion` library for all animations and transitions.
 - Import from `"motion/react"` for React components (`<motion.div>`, etc.).
 - Prefer `motion` over CSS transitions/animations.
 
 ### Code Style
+
 - Functional components only, no class components.
 - Use named exports for components (except the main App which uses default export).
 - TypeScript strict mode is enabled.
@@ -35,7 +38,9 @@ GCS (Ground Control Station) frontend — a web app for real-time UAV/drone tele
 - Place component files in `src/` — organize into subdirectories as the project grows (e.g., `src/components/`, `src/hooks/`).
 
 ### Formatting (Prettier)
+
 All code must follow the project's Prettier config (`.prettierrc.json`):
+
 - **No semicolons** — omit `;` at the end of statements.
 - **Single quotes** — use `'single quotes'` for strings (JSX attributes too).
 - **Trailing commas** — always include trailing commas in multi-line lists, objects, parameters, etc.
@@ -44,6 +49,7 @@ All code must follow the project's Prettier config (`.prettierrc.json`):
 - Tailwind classes are auto-sorted by `prettier-plugin-tailwindcss`.
 
 ### Project Structure
+
 ```
 src/
   main.tsx          — app entry, Radix Theme provider
@@ -52,9 +58,11 @@ src/
 ```
 
 ## Git
+
 - **NEVER** commit, amend, or push without the user explicitly asking you to.
 
 ## Commands
+
 - `npm run dev` — start dev server
 - `npm run build` — type-check + production build
 - `npm run lint` — ESLint

@@ -51,7 +51,7 @@ export function Compass({ heading, groundSpeed }: CompassProps) {
   }, [springHeading, hasHeading, heading])
 
   return (
-    <svg viewBox="12 12 176 176" className="w-full h-auto">
+    <svg viewBox="12 12 176 176" className="h-auto w-full">
       {/* Minor ticks every 30deg */}
       {TICK_ANGLES.map((angle) => {
         const isCardinal = angle % 90 === 0
@@ -112,7 +112,7 @@ export function Compass({ heading, groundSpeed }: CompassProps) {
           <text
             textAnchor="middle"
             dominantBaseline="central"
-            className="fill-foreground text-xs font-mono"
+            className="fill-foreground font-mono text-xs"
           >
             {heading.toFixed(0)}&deg;
           </text>

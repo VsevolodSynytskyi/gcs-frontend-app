@@ -15,10 +15,17 @@ export function TelemetryPanel() {
       initial={{ x: 40 }}
       animate={{ x: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
-      className="absolute left-4 top-1/2 -translate-y-1/2 z-[1000] w-72"
+      className="absolute top-1/2 left-4 z-[1000] w-72 -translate-y-1/2"
     >
-      <Perspective3DContainer maxTilt={10} perspective="800px" stiffness={80} damping={18}>
-        <div className={`flex flex-col gap-1 ${appearance === 'dark' ? 'dark' : 'light'}`}>
+      <Perspective3DContainer
+        maxTilt={10}
+        perspective="800px"
+        stiffness={80}
+        damping={18}
+      >
+        <div
+          className={`flex flex-col gap-1 ${appearance === 'dark' ? 'dark' : 'light'}`}
+        >
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -53,10 +60,7 @@ export function TelemetryPanel() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.15 }}
           >
-            <PositionCard
-              lat={telemetry?.lat ?? 0}
-              lon={telemetry?.lon ?? 0}
-            />
+            <PositionCard lat={telemetry?.lat ?? 0} lon={telemetry?.lon ?? 0} />
           </motion.div>
         </div>
       </Perspective3DContainer>
