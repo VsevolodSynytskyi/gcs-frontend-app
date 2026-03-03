@@ -4,6 +4,7 @@ import type { AppPhase } from '@/hooks/useAppPhase'
 import { useTelemetry } from '@/context/TelemetryContext'
 import { IntroCard } from './IntroCard'
 import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect'
+import { Perspective3DContainer } from '@/components/ui/Perspective3DContainer'
 
 const EXPAND_TRANSITION = {
   duration: 0.6,
@@ -94,7 +95,9 @@ export function IntroTransition({
       {isCard && (
         <div className="pointer-events-none absolute inset-0 z-5 flex items-center justify-center">
           <div ref={cardRef} className="pointer-events-auto w-72">
-            <IntroCard phase={phase} onBegin={onBegin} />
+            <Perspective3DContainer>
+              <IntroCard phase={phase} onBegin={onBegin} />
+            </Perspective3DContainer>
           </div>
         </div>
       )}

@@ -15,14 +15,9 @@ export function TelemetryPanel() {
       initial={{ x: 40 }}
       animate={{ x: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
-      className="absolute top-1/2 left-4 z-[1000] w-72 -translate-y-1/2"
+      className="absolute top-1/2 left-4 z-1000 w-72 -translate-y-1/2"
     >
-      <Perspective3DContainer
-        maxTilt={10}
-        perspective="800px"
-        stiffness={80}
-        damping={18}
-      >
+      <Perspective3DContainer>
         <div
           className={`flex flex-col gap-1 ${appearance === 'dark' ? 'dark' : 'light'}`}
         >
