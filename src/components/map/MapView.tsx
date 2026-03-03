@@ -1,14 +1,19 @@
 import { MapContainer, TileLayer } from 'react-leaflet'
+import type { Map } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useTelemetry } from '@/context/TelemetryContext'
 import { useAppearance } from '@/context/AppearanceContext'
 import { useLastPosition } from '@/hooks/useLastPosition'
 import { TILE_LAYERS } from './tileLayers'
 import { DroneMarker } from './DroneMarker'
-import { RecenterButton } from './RecenterButton'
 import { MapResizeObserver } from './MapResizeObserver'
+import { MapScale } from './MapScale'
 
-export function MapView() {
+interface MapViewProps {
+  onMapReady?: (map: Map) => void
+}
+
+export function MapView({ onMapReady }: MapViewProps) {
   const { telemetry } = useTelemetry()
   const { mapLayer } = useAppearance()
   const position = useLastPosition(telemetry)
@@ -16,6 +21,9 @@ export function MapView() {
 
   return (
     <MapContainer
+      ref={(map) => {
+        if (map) onMapReady?.(map)
+      }}
       center={position}
       zoom={17}
       className="size-full"
@@ -28,9 +36,12 @@ export function MapView() {
       />
       <MapResizeObserver />
       {telemetry && (
-        <DroneMarker position={position} heading={telemetry.heading} />
+        <DroneMarker
+          position={position}
+          heading={telemetry.heading}
+        />
       )}
-      <RecenterButton position={position} />
+      <MapScale />
     </MapContainer>
   )
 }
