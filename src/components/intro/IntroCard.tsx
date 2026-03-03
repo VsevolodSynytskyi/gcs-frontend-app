@@ -1,6 +1,7 @@
-import { motion, AnimatePresence } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { GlassCard } from '@/components/ui/GlassCard'
 import type { AppPhase } from '@/hooks/useAppPhase'
 
 interface IntroCardProps {
@@ -12,7 +13,7 @@ export function IntroCard({ phase, onBegin }: IntroCardProps) {
   const connected = phase === 'ready'
 
   return (
-    <div className="flex flex-col items-stretch gap-4 p-6 w-full">
+    <GlassCard className="flex w-full flex-col items-stretch gap-4 p-6">
       <div className="flex justify-center">
         <AnimatePresence mode="wait">
           <motion.div
@@ -29,14 +30,9 @@ export function IntroCard({ phase, onBegin }: IntroCardProps) {
         </AnimatePresence>
       </div>
 
-      <Button
-        size="lg"
-        className="w-full"
-        disabled={!connected}
-        onClick={onBegin}
-      >
+      <Button className="w-full" disabled={!connected} onClick={onBegin}>
         Begin
       </Button>
-    </div>
+    </GlassCard>
   )
 }
