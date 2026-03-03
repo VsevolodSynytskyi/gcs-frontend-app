@@ -1,9 +1,9 @@
-import { useTelemetry } from './context/TelemetryContext'
-import { useAppPhase } from './hooks/useAppPhase'
-import { MapView } from './components/map/MapView'
-import { LayerSwitcher } from './components/map/LayerSwitcher'
-import { TelemetryPanel } from './components/telemetry/TelemetryPanel'
-import { IntroTransition } from './components/intro/IntroTransition'
+import { useTelemetry } from '@/context/TelemetryContext'
+import { useAppPhase } from '@/hooks/useAppPhase'
+import { MapView } from '@/components/map/MapView'
+import { LayerSwitcher } from '@/components/map/LayerSwitcher'
+import { TelemetryPanel } from '@/components/telemetry/TelemetryPanel'
+import { IntroTransition } from '@/components/intro/IntroTransition'
 
 function App() {
   const { connectionStatus } = useTelemetry()

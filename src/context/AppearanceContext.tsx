@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from 'react'
-import type { MapLayer } from '../components/map/LayerSwitcher'
+import type { MapLayer } from '@/components/map/LayerSwitcher'
 
 type Appearance = 'dark' | 'light'
 

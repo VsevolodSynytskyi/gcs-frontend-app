@@ -1,5 +1,5 @@
 import { Separator } from '@/components/ui/separator'
-import { GlassCard } from '../ui/GlassCard'
+import { GlassCard } from '@/components/ui/GlassCard'
 import { Compass } from './Compass'
 
 interface NavigationCardProps {

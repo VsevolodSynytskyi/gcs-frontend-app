@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'motion/react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import type { AppPhase } from '../../hooks/useAppPhase'
+import type { AppPhase } from '@/hooks/useAppPhase'
 
 interface IntroCardProps {
   phase: AppPhase

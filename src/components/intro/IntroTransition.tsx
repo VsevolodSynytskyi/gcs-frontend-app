@@ -1,9 +1,9 @@
 import { useRef, useEffect, type ReactNode } from 'react'
 import { motion } from 'motion/react'
-import type { AppPhase } from '../../hooks/useAppPhase'
-import { useTelemetry } from '../../context/TelemetryContext'
+import type { AppPhase } from '@/hooks/useAppPhase'
+import { useTelemetry } from '@/context/TelemetryContext'
 import { IntroCard } from './IntroCard'
-import { BackgroundRippleEffect } from '../ui/background-ripple-effect'
+import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect'
 
 interface IntroTransitionProps {
   phase: AppPhase

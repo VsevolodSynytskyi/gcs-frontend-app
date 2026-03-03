@@ -1,6 +1,6 @@
 import { createContext, useContext, type ReactNode } from 'react'
-import { useTelemetry as useTelemetryHook } from '../hooks/useTelemetry'
-import type { ConnectionStatus, Telemetry } from '../hooks/useTelemetry'
+import { useTelemetry as useTelemetryHook } from '@/hooks/useTelemetry'
+import type { ConnectionStatus, Telemetry } from '@/hooks/useTelemetry'
 
 interface TelemetryContextValue {
   telemetry: Telemetry | null

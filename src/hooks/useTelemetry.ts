@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { fetchTelemetry, type ConnectionStatus, type Telemetry } from '../api/telemetry'
+import { fetchTelemetry, type ConnectionStatus, type Telemetry } from '@/api/telemetry'
 
-export type { ConnectionStatus, Telemetry } from '../api/telemetry'
+export type { ConnectionStatus, Telemetry } from '@/api/telemetry'
 
 const POLL_INTERVAL = 100
 const RECONNECT_THRESHOLD = 5

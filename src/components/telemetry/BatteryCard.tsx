@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { GlassCard } from '../ui/GlassCard'
+import { GlassCard } from '@/components/ui/GlassCard'
 
 interface BatteryCardProps {
   percentage: number

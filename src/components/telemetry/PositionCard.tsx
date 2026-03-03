@@ -1,4 +1,4 @@
-import { GlassCard } from '../ui/GlassCard'
+import { GlassCard } from '@/components/ui/GlassCard'
 
 interface PositionCardProps {
   lat: number

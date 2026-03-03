@@ -1,12 +1,12 @@
 import { motion } from 'motion/react'
-import { useTelemetry } from '../../context/TelemetryContext'
-import { useAppearance } from '../../context/AppearanceContext'
-import { arm, disarm } from '../../api/droneControl'
+import { useTelemetry } from '@/context/TelemetryContext'
+import { useAppearance } from '@/context/AppearanceContext'
+import { arm, disarm } from '@/api/droneControl'
 import { StatusCard } from './StatusCard'
 import { BatteryCard } from './BatteryCard'
 import { NavigationCard } from './NavigationCard'
 import { PositionCard } from './PositionCard'
-import { Perspective3DContainer } from '../ui/Perspective3DContainer'
+import { Perspective3DContainer } from '@/components/ui/Perspective3DContainer'
 
 export function TelemetryPanel() {
   const { telemetry, connectionStatus } = useTelemetry()

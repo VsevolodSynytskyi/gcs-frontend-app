@@ -2,8 +2,8 @@ import { motion, AnimatePresence } from 'motion/react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { GlassCard } from '../ui/GlassCard'
-import type { ConnectionStatus } from '../../hooks/useTelemetry'
+import { GlassCard } from '@/components/ui/GlassCard'
+import type { ConnectionStatus } from '@/hooks/useTelemetry'
 
 interface StatusCardProps {
   connectionStatus: ConnectionStatus

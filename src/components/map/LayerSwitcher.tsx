@@ -1,5 +1,5 @@
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { useAppearance } from '../../context/AppearanceContext'
+import { useAppearance } from '@/context/AppearanceContext'
 
 export type MapLayer = 'Dark' | 'Street' | 'Satellite'
 
