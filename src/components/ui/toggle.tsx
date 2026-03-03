@@ -22,8 +22,8 @@ const toggleVariants = cva(
       },
     },
     defaultVariants: {
-      variant: "default",
-      size: "default",
+      variant: "outline",
+      size: "sm",
     },
   }
 )
