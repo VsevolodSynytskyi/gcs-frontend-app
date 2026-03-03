@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { cn } from '@/lib/utils'
 
 interface GlassCardProps {
   children: ReactNode
@@ -8,7 +9,10 @@ interface GlassCardProps {
 export function GlassCard({ children, className }: GlassCardProps) {
   return (
     <div
-      className={`backdrop-blur-sm bg-background/40 border border-white/20 [.light_&]:border-white/50 rounded-xl shadow-sm [.light_&]:shadow-none p-4 ${className ?? ''}`}
+      className={cn(
+        'bg-background/40 rounded-xl border border-white/20 p-4 shadow-sm backdrop-blur-sm [.light_&]:border-white/50 [.light_&]:shadow-none',
+        className,
+      )}
     >
       {children}
     </div>

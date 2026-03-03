@@ -20,10 +20,9 @@ export function RecenterButton({ position }: RecenterButtonProps) {
         <Tooltip.Root>
           <Tooltip.Trigger asChild>
             <Button
-              variant="ghost"
               size="icon"
               onClick={handleClick}
-              className="baackdrop-blur-sm bg-black/40 hover:bg-black/60 border border-white/10 text-white/70 hover:text-white"
+              className="backdrop-blur-sm bg-black/40 hover:bg-black/60 border border-white/10 text-white/70 hover:text-white"
             >
               <Crosshair size={18} />
             </Button>

@@ -1,7 +1,6 @@
 import { motion } from 'motion/react'
 import { useTelemetry } from '@/context/TelemetryContext'
 import { useAppearance } from '@/context/AppearanceContext'
-import { arm, disarm } from '@/api/droneControl'
 import { StatusCard } from './StatusCard'
 import { BatteryCard } from './BatteryCard'
 import { NavigationCard } from './NavigationCard'
@@ -9,7 +8,7 @@ import { PositionCard } from './PositionCard'
 import { Perspective3DContainer } from '@/components/ui/Perspective3DContainer'
 
 export function TelemetryPanel() {
-  const { telemetry, connectionStatus } = useTelemetry()
+  const { telemetry } = useTelemetry()
   const { appearance } = useAppearance()
   return (
     <motion.div
@@ -25,12 +24,7 @@ export function TelemetryPanel() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0 }}
           >
-            <StatusCard
-              connectionStatus={connectionStatus}
-              armed={telemetry?.armed ?? false}
-              onArm={arm}
-              onDisarm={disarm}
-            />
+            <StatusCard />
           </motion.div>
 
           <motion.div

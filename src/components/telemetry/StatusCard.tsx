@@ -1,31 +1,31 @@
-import { motion, AnimatePresence } from 'motion/react'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
-import { GlassCard } from '@/components/ui/GlassCard'
-import type { ConnectionStatus } from '@/hooks/useTelemetry'
+import {AnimatePresence, motion} from 'motion/react'
+import {Badge, type badgeVariants} from '@/components/ui/badge'
+import {Button} from '@/components/ui/button'
+import {Separator} from '@/components/ui/separator'
+import {GlassCard} from '@/components/ui/GlassCard'
+import {type ConnectionStatus, useTelemetry} from '@/hooks/useTelemetry'
+import {armAndTakeoff} from "@/api/droneControl.ts"
+import type { VariantProps } from 'class-variance-authority'
 
-interface StatusCardProps {
-  connectionStatus: ConnectionStatus
-  armed: boolean
-  onArm: () => void
-  onDisarm: () => void
+type BadgeVariant = NonNullable<VariantProps<typeof badgeVariants>['variant']>
+
+const connectionBadge: Record<ConnectionStatus, { variant: BadgeVariant; label: string }> = {
+  connected: { variant: 'default', label: 'Connected' },
+  disconnected: { variant: 'destructive', label: 'Disconnected' },
+  reconnecting: { variant: 'secondary', label: 'Reconnecting' },
 }
 
-const connectionBadgeStyle: Record<ConnectionStatus, string> = {
-  connected: 'bg-green-500/15 text-green-500 border-green-500/25',
-  disconnected: 'bg-red-500/15 text-red-500 border-red-500/25',
-  reconnecting: 'bg-yellow-500/15 text-yellow-500 border-yellow-500/25',
-}
-
-const connectionLabel: Record<ConnectionStatus, string> = {
-  connected: 'Connected',
-  disconnected: 'Disconnected',
-  reconnecting: 'Reconnecting',
-}
-
-export function StatusCard({ connectionStatus, armed, onArm, onDisarm }: StatusCardProps) {
+export function StatusCard() {
+  const {telemetry, connectionStatus} = useTelemetry()
+  const armed = telemetry?.armed ?? false
   const connected = connectionStatus === 'connected'
+  const onTakeOffClick = async () => {
+    await armAndTakeoff()
+  }
+  const onLandClick = async () => {
+    console.log("land") // TODO
+  }
+
   return (
     <GlassCard>
       <div className="flex flex-col gap-3">
@@ -35,20 +35,20 @@ export function StatusCard({ connectionStatus, armed, onArm, onDisarm }: StatusC
             <AnimatePresence mode="wait">
               <motion.div
                 key={connectionStatus}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.15 }}
+                initial={{opacity: 0}}
+                animate={{opacity: 1}}
+                exit={{opacity: 0}}
+                transition={{duration: 0.15}}
               >
-                <Badge variant="outline" className={connectionBadgeStyle[connectionStatus]}>
+                <Badge variant={connectionBadge[connectionStatus].variant}>
                   {connectionStatus === 'reconnecting' && (
                     <motion.span
-                      className="inline-block size-1.5 rounded-full bg-yellow-500 mr-1"
-                      animate={{ opacity: [1, 0.3, 1] }}
-                      transition={{ repeat: Infinity, duration: 1.5 }}
+                      className="inline-block size-1.5 rounded-full bg-current mr-1"
+                      animate={{opacity: [1, 0.3, 1]}}
+                      transition={{repeat: Infinity, duration: 1.5}}
                     />
                   )}
-                  {connectionLabel[connectionStatus]}
+                  {connectionBadge[connectionStatus].label}
                 </Badge>
               </motion.div>
             </AnimatePresence>
@@ -56,34 +56,28 @@ export function StatusCard({ connectionStatus, armed, onArm, onDisarm }: StatusC
 
           <div>
             <span className="text-xs text-muted-foreground uppercase tracking-wider block mb-1">Status</span>
-            <Badge
-              variant="outline"
-              className={armed ? 'bg-green-500/15 text-green-500 border-green-500/25' : 'bg-red-500/15 text-red-500 border-red-500/25'}
-            >
+            <Badge variant={armed ? 'default' : 'destructive'}>
               {armed ? 'Armed' : 'Disarmed'}
             </Badge>
           </div>
         </div>
 
-        <Separator />
+        <Separator/>
 
         <div className="grid grid-cols-2 gap-2">
           <Button
-            size="default"
-            className="w-full cursor-pointer bg-green-600 hover:bg-green-700 text-white"
+            className="w-full"
             disabled={!connected || armed}
-            onClick={onArm}
+            onClick={onTakeOffClick}
           >
-            Arm
+            Take off
           </Button>
           <Button
-            variant="destructive"
-            size="default"
-            className="w-full cursor-pointer"
+            className="w-full"
             disabled={!connected || !armed}
-            onClick={onDisarm}
+            onClick={onLandClick}
           >
-            Disarm
+            Land
           </Button>
         </div>
       </div>

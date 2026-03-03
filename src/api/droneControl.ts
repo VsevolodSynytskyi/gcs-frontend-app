@@ -11,7 +11,7 @@ async function sendCommand(command: string, params: number[] = []) {
       type: 'COMMAND_LONG',
       target_system: 1,
       target_component: 1,
-      command: { type: command },
+      command: {type: command},
       confirmation: 1,
       param1: params[0] ?? 0.0,
       param2: params[1] ?? 0.0,
@@ -25,7 +25,7 @@ async function sendCommand(command: string, params: number[] = []) {
 
   await fetch(COMMAND_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(message),
   })
 }
@@ -52,4 +52,16 @@ export async function land() {
 // MAV_CMD_DO_REPOSITION: param5 = lat, param6 = lon, param7 = alt
 export async function goToLocation(lat: number, lon: number, alt: number) {
   await sendCommand('MAV_CMD_DO_REPOSITION', [0, 0, 0, 0, lat, lon, alt])
+}
+
+export async function setModeGuided() {
+  // param1 = 1 (MAV_MODE_FLAG_CUSTOM_MODE_ENABLED)
+  // param2 = 4 (GUIDED mode for ArduCopter)
+  await sendCommand('MAV_CMD_DO_SET_MODE', [1, 4])
+}
+
+export async function armAndTakeoff(altitude: number = 10) {
+  await setModeGuided()
+  await arm()
+  await takeoff(altitude)
 }

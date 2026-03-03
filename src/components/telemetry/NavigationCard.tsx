@@ -1,5 +1,6 @@
 import { Separator } from '@/components/ui/separator'
 import { GlassCard } from '@/components/ui/GlassCard'
+import { StatItem } from '@/components/ui/StatItem'
 import { Compass } from './Compass'
 
 interface NavigationCardProps {
@@ -15,18 +16,10 @@ export function NavigationCard({ heading, groundSpeed, altitude, verticalSpeed }
       <Compass heading={heading} groundSpeed={groundSpeed} />
       <Separator className="my-3" />
       <div className="grid grid-cols-2 gap-4">
-        <div className="flex flex-col gap-1">
-          <span className="text-xs text-muted-foreground uppercase tracking-wider">Altitude</span>
-          <span className="text-base text-foreground font-mono">
-            {altitude.toFixed(1)} m
-          </span>
-        </div>
-        <div className="flex flex-col gap-1">
-          <span className="text-xs text-muted-foreground uppercase tracking-wider">Vertical Speed</span>
-          <span className="text-base text-foreground font-mono">
-            {verticalSpeed > 0 ? '+' : ''}{verticalSpeed.toFixed(1)} m/s
-          </span>
-        </div>
+        <StatItem label="Altitude">{altitude.toFixed(1)} m</StatItem>
+        <StatItem label="Vertical Speed">
+          {verticalSpeed > 0 ? '+' : ''}{verticalSpeed.toFixed(1)} m/s
+        </StatItem>
       </div>
     </GlassCard>
   )

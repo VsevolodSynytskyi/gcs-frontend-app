@@ -8,11 +8,6 @@ interface IntroCardProps {
   onBegin: () => void
 }
 
-const badgeStyles: Record<string, string> = {
-  green: 'bg-green-500/15 text-green-500 border-green-500/25',
-  yellow: 'bg-yellow-500/15 text-yellow-500 border-yellow-500/25',
-}
-
 export function IntroCard({ phase, onBegin }: IntroCardProps) {
   const connected = phase === 'ready'
 
@@ -27,10 +22,7 @@ export function IntroCard({ phase, onBegin }: IntroCardProps) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <Badge
-              variant="outline"
-              className={connected ? badgeStyles.green : badgeStyles.yellow}
-            >
+            <Badge variant={connected ? 'default' : 'secondary'}>
               {connected ? 'Connected' : 'Waiting for connection'}
             </Badge>
           </motion.div>
@@ -39,7 +31,7 @@ export function IntroCard({ phase, onBegin }: IntroCardProps) {
 
       <Button
         size="lg"
-        className="w-full cursor-pointer bg-green-600 hover:bg-green-700 text-white"
+        className="w-full"
         disabled={!connected}
         onClick={onBegin}
       >

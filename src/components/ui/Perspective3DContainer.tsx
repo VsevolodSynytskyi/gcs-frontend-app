@@ -29,7 +29,7 @@ export function Perspective3DContainer({
     <div style={{ perspective }}>
       <motion.div
         ref={containerRef}
-        className={cn('[transform-style:preserve-3d]', className)}
+        className={cn(className)}
         style={{
           rotateX: springRotateX,
           rotateY: springRotateY,
