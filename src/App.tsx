@@ -4,10 +4,12 @@ import { MapView } from '@/components/map/MapView'
 import { LayerSwitcher } from '@/components/map/LayerSwitcher'
 import { TelemetryPanel } from '@/components/telemetry/TelemetryPanel'
 import { IntroTransition } from '@/components/intro/IntroTransition'
+import { Toaster } from '@/components/ui/Toaster'
 
 function App() {
   const { connectionStatus } = useTelemetry()
-  const { phase, beginTransition, onTransitionComplete } = useAppPhase(connectionStatus)
+  const { phase, beginTransition, onTransitionComplete } =
+    useAppPhase(connectionStatus)
   const isViewExpanded = phase === 'transitioning' || phase === 'active'
 
   return (
@@ -25,6 +27,7 @@ function App() {
           </>
         )}
       </IntroTransition>
+      <Toaster />
     </div>
   )
 }

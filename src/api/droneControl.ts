@@ -1,3 +1,5 @@
+import { addToast } from '@/components/ui/Toaster'
+
 const COMMAND_URL = 'http://localhost:8088/v1/mavlink'
 
 async function sendCommand(command: string, params: number[] = []) {
@@ -11,7 +13,7 @@ async function sendCommand(command: string, params: number[] = []) {
       type: 'COMMAND_LONG',
       target_system: 1,
       target_component: 1,
-      command: {type: command},
+      command: { type: command },
       confirmation: 1,
       param1: params[0] ?? 0.0,
       param2: params[1] ?? 0.0,
@@ -23,11 +25,20 @@ async function sendCommand(command: string, params: number[] = []) {
     },
   }
 
-  await fetch(COMMAND_URL, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(message),
-  })
+  try {
+    const response = await fetch(COMMAND_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(message),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Command ${command} failed (${response.status})`)
+    }
+  } catch (error) {
+    addToast(error instanceof Error ? error.message : 'Unknown command error')
+    throw error
+  }
 }
 
 // MAV_CMD_COMPONENT_ARM_DISARM: param1 1.0 = arm, 0.0 = disarm
