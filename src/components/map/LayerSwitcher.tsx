@@ -8,20 +8,20 @@ export function LayerSwitcher() {
   const { mapLayer, setMapLayer } = useAppearance()
 
   return (
-    <div className="absolute bottom-3 left-3 z-1000 text-foreground">
+    <div className="text-foreground absolute bottom-3 left-3 z-1000">
       <GlassCard className="p-1">
-          <ToggleGroup
-            type="single"
-            variant="outline"
-            value={mapLayer}
-            onValueChange={(value) => {
-              if (value) setMapLayer(value as MapLayer)
-            }}
-          >
-            <ToggleGroupItem value="Dark">Dark</ToggleGroupItem>
-            <ToggleGroupItem value="Street">Street</ToggleGroupItem>
-            <ToggleGroupItem value="Satellite">Satellite</ToggleGroupItem>
-          </ToggleGroup>
+        <ToggleGroup
+          type="single"
+          variant="outline"
+          value={mapLayer}
+          onValueChange={(value) => {
+            if (value) setMapLayer(value as MapLayer)
+          }}
+        >
+          <ToggleGroupItem value="Dark">Dark</ToggleGroupItem>
+          <ToggleGroupItem value="Street">Street</ToggleGroupItem>
+          <ToggleGroupItem value="Satellite">Satellite</ToggleGroupItem>
+        </ToggleGroup>
       </GlassCard>
     </div>
   )
