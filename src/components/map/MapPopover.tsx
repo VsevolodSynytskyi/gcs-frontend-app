@@ -1,10 +1,6 @@
 import type { ReactNode } from 'react'
 import { X } from 'lucide-react'
-import {
-  Popover,
-  PopoverAnchor,
-  PopoverContent,
-} from '@/components/ui/popover'
+import { Popover, PopoverAnchor, PopoverContent } from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
 
 export interface MapPopoverItem {
@@ -22,15 +18,13 @@ interface MapPopoverProps {
   onClose: () => void
 }
 
-export function MapPopover({
-  open,
-  x,
-  y,
-  items,
-  onClose,
-}: MapPopoverProps) {
+export function MapPopover({ open, x, y, items, onClose }: MapPopoverProps) {
   return (
-    <Popover key={`${x}-${y}`} open={open} onOpenChange={(o) => !o && onClose()}>
+    <Popover
+      key={`${x}-${y}`}
+      open={open}
+      onOpenChange={(o) => !o && onClose()}
+    >
       <PopoverAnchor asChild>
         <div
           className="pointer-events-none absolute"
@@ -61,11 +55,7 @@ export function MapPopover({
             ))}
           </div>
           <div className="bg-border mx-1 w-px self-stretch" />
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            onClick={onClose}
-          >
+          <Button variant="ghost" size="icon-sm" onClick={onClose}>
             <X className="size-4" />
           </Button>
         </div>

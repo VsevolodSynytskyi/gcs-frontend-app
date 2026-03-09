@@ -4,9 +4,7 @@ const API_BASE =
 export type ConnectionStatus = 'connected' | 'disconnected' | 'reconnecting'
 
 export interface Telemetry {
-  lat: number
-  lon: number
-  alt: number
+  position: { lat: number; lon: number; alt: number }
   heading: number
   groundSpeed: number
   verticalSpeed: number
@@ -26,16 +24,17 @@ export async function fetchTelemetry(): Promise<Telemetry> {
   const hb = await hbRes.json()
 
   return {
-    lat: pos.message.lat / 1e7,
-    lon: pos.message.lon / 1e7,
-    alt: pos.message.relative_alt / 1000,
+    position: {
+      lat: pos.message.lat / 1e7,
+      lon: pos.message.lon / 1e7,
+      alt: pos.message.relative_alt / 1000,
+    },
     heading: pos.message.hdg / 100,
     groundSpeed: Math.sqrt(
       Math.pow(pos.message.vx / 100, 2) + Math.pow(pos.message.vy / 100, 2),
     ),
     verticalSpeed: -(pos.message.vz / 100),
     battery: batt.message.battery_remaining,
-
     armed: String(hb.message.base_mode).includes('MAV_MODE_FLAG_SAFETY_ARMED'),
   }
 }

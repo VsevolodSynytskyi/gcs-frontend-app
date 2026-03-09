@@ -44,7 +44,7 @@ export function MapContextMenu() {
       onClick: async () => {
         if (!click || !telemetry) return
         const { lat, lng } = click.latlng
-        await goToLocation(lat, lng, telemetry.alt)
+        await goToLocation(lat, lng, telemetry.position.alt)
         setClick(null)
       },
     },

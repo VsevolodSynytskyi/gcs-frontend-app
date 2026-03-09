@@ -8,6 +8,10 @@ import { Perspective3DContainer } from '@/components/ui/Perspective3DContainer'
 
 export function TelemetryPanel() {
   const { telemetry } = useTelemetry()
+
+  // TODO add fallback UI
+  if (!telemetry) return null
+
   return (
     <motion.div
       initial={{ x: 40 }}
@@ -30,7 +34,7 @@ export function TelemetryPanel() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.05 }}
           >
-            <BatteryCard percentage={telemetry?.battery ?? 0} />
+            <BatteryCard percentage={telemetry.battery} />
           </motion.div>
 
           <motion.div
@@ -39,10 +43,10 @@ export function TelemetryPanel() {
             transition={{ delay: 0.1 }}
           >
             <NavigationCard
-              heading={telemetry?.heading ?? 0}
-              groundSpeed={telemetry?.groundSpeed ?? 0}
-              altitude={telemetry?.alt ?? 0}
-              verticalSpeed={telemetry?.verticalSpeed ?? 0}
+              heading={telemetry.heading}
+              groundSpeed={telemetry.groundSpeed}
+              altitude={telemetry.position.alt}
+              verticalSpeed={telemetry.verticalSpeed}
             />
           </motion.div>
 
@@ -51,7 +55,10 @@ export function TelemetryPanel() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.15 }}
           >
-            <PositionCard lat={telemetry?.lat ?? 0} lon={telemetry?.lon ?? 0} />
+            <PositionCard
+              lat={telemetry.position.lat}
+              lon={telemetry.position.lon}
+            />
           </motion.div>
         </div>
       </Perspective3DContainer>
