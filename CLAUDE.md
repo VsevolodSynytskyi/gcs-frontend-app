@@ -10,6 +10,7 @@ GCS (Ground Control Station) frontend — a web app for real-time UAV/drone tele
 - **TailwindCSS v4** — all styling via utility classes (configured as Vite plugin, no `tailwind.config.js`)
 - **shadcn/ui** (new-york style) — UI component library built on Radix UI primitives (`npx shadcn@latest add <component>`)
 - **Aceternity UI** — special effect components (3D cards, ripples, etc.) via `@aceternity` registry
+- **Lucide React** (`lucide-react`) — icon library
 - **Motion** (`motion`) — all animations (do NOT use CSS animations or transitions for UI motion)
 - **Leaflet** + **React-Leaflet** — map rendering
 - **MAVLink REST API** at `http://localhost:8088` — drone telemetry source

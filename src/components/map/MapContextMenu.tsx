@@ -1,7 +1,7 @@
-import { useState, useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useMapEvents } from 'react-leaflet'
 import type { LatLng, LeafletMouseEvent } from 'leaflet'
-import { MapPin } from 'lucide-react'
+import { MapPinned } from 'lucide-react'
 import { useTelemetry } from '@/context/TelemetryContext'
 import { goToLocation } from '@/api/droneControl'
 import { MapPopover, type MapPopoverItem } from './MapPopover'
@@ -27,7 +27,7 @@ export function MapContextMenu() {
   const items: MapPopoverItem[] = [
     {
       label: 'Go to location',
-      icon: <MapPin className="size-4" />,
+      icon: <MapPinned className="size-4" />,
       disabled: !telemetry,
       onClick: async () => {
         if (!click || !telemetry) return

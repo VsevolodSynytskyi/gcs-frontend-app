@@ -9,6 +9,7 @@ Ground Control Station web application for UAV/drone telemetry and mission contr
 - **TailwindCSS v4** — utility-first styling
 - **shadcn/ui** — UI component library (built on Radix UI primitives)
 - **Aceternity UI** — special effect components (3D cards, ripples, etc.)
+- **Lucide React** — icons
 - **Motion** — animations
 - **Leaflet** + **React-Leaflet** — interactive map
 - **MAVLink** telemetry via REST API (`localhost:8088`)
