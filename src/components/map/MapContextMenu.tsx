@@ -1,10 +1,23 @@
 import { useCallback, useState } from 'react'
-import { useMapEvents } from 'react-leaflet'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { Marker, useMapEvents } from 'react-leaflet'
+import L from 'leaflet'
 import type { LatLng, LeafletMouseEvent } from 'leaflet'
-import { MapPinned } from 'lucide-react'
+import { Locate, MapPinned } from 'lucide-react'
 import { useTelemetry } from '@/context/TelemetryContext'
 import { goToLocation } from '@/api/droneControl'
 import { MapPopover, type MapPopoverItem } from './MapPopover'
+
+const ICON_SIZE = 24
+
+const locateIcon = L.divIcon({
+  html: renderToStaticMarkup(
+    <Locate size={ICON_SIZE} color="white" strokeWidth={2} />,
+  ),
+  className: '!bg-transparent !border-none flex items-center justify-center',
+  iconSize: [ICON_SIZE, ICON_SIZE],
+  iconAnchor: [ICON_SIZE / 2, ICON_SIZE / 2],
+})
 
 export function MapContextMenu() {
   const { telemetry } = useTelemetry()
@@ -39,12 +52,21 @@ export function MapContextMenu() {
   ]
 
   return (
-    <MapPopover
-      open={!!click}
-      x={click?.x ?? 0}
-      y={click?.y ?? 0}
-      items={items}
-      onClose={() => setClick(null)}
-    />
+    <>
+      {click && (
+        <Marker
+          position={[click.latlng.lat, click.latlng.lng]}
+          icon={locateIcon}
+          interactive={false}
+        />
+      )}
+      <MapPopover
+        open={!!click}
+        x={click?.x ?? 0}
+        y={click?.y ?? 0}
+        items={items}
+        onClose={() => setClick(null)}
+      />
+    </>
   )
 }
