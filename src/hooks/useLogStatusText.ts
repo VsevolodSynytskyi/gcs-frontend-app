@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { addToast } from '@/components/ui/Toaster'
+import { addToast, type ToastVariant } from '@/components/ui/Toaster'
 
 const WS_URL = 'ws://localhost:8088/ws/mavlink?filter=STATUSTEXT|COMMAND_ACK'
 const MAX_RECONNECT_DELAY = 16000
@@ -33,11 +33,18 @@ const ACK_RESULTS: Record<number, string> = {
   6: 'CANCELLED',
 }
 
+function severityVariant(severity: number): ToastVariant {
+  if (severity <= 3) return 'error'
+  if (severity === 4) return 'warning'
+  if (severity === 6) return 'info'
+  return 'default'
+}
+
 function logStatusText(severity: number, text: string) {
   const label = SEVERITY_LABELS[severity] ?? 'UNKNOWN'
   const formatted = `[${label}] ${text}`
 
-  addToast(formatted)
+  addToast(formatted, severityVariant(severity))
 
   switch (true) {
     case severity <= 3:
@@ -92,10 +99,11 @@ function logCommandAck(
   }
 
   const formatted = `[COMMAND_ACK] ${cmdName}: ${resultName}`
+  const isOk = resultName === 'ACCEPTED' || resultName === 'IN_PROGRESS'
 
-  addToast(formatted)
+  addToast(formatted, isOk ? 'default' : 'warning')
 
-  if (resultName === 'ACCEPTED' || resultName === 'IN_PROGRESS') {
+  if (isOk) {
     console.log(formatted)
   } else {
     console.warn(formatted)

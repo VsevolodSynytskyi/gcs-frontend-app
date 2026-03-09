@@ -1,8 +1,22 @@
 import { useSyncExternalStore } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { CircleAlert } from 'lucide-react'
+import { CircleAlert, Info, TriangleAlert } from 'lucide-react'
 
-type ToastVariant = 'default' | 'error'
+export type ToastVariant = 'default' | 'info' | 'warning' | 'error'
+
+const variantStyles: Record<ToastVariant, string> = {
+  default: 'text-foreground/80',
+  info: 'text-blue-400',
+  warning: 'text-yellow-400',
+  error: 'text-red-400',
+}
+
+const variantIcons: Record<ToastVariant, React.ReactNode> = {
+  default: null,
+  info: <Info size={16} className="shrink-0" />,
+  warning: <TriangleAlert size={16} className="shrink-0" />,
+  error: <CircleAlert size={16} className="shrink-0" />,
+}
 
 type Toast = {
   id: number
@@ -56,15 +70,9 @@ export function Toaster() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className={
-              toast.variant === 'error'
-                ? 'bg-background/40 flex w-full items-center gap-2 rounded-xl border border-white/20 px-4 py-3 font-mono text-sm text-red-400 shadow-sm backdrop-blur-sm'
-                : 'bg-background/40 text-foreground/80 flex w-full items-center gap-2 rounded-xl border border-white/20 px-4 py-3 font-mono text-sm shadow-sm backdrop-blur-sm'
-            }
+            className={`bg-background/40 flex w-full items-center gap-2 rounded-xl border border-white/20 px-4 py-3 font-mono text-sm shadow-sm backdrop-blur-sm ${variantStyles[toast.variant]}`}
           >
-            {toast.variant === 'error' && (
-              <CircleAlert size={16} className="shrink-0" />
-            )}
+            {variantIcons[toast.variant]}
             {toast.message}
           </motion.div>
         ))}
