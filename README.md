@@ -7,7 +7,8 @@ Ground Control Station web application for UAV/drone telemetry and mission contr
 - **React 19** with TypeScript
 - **Vite** (SWC) — build tool
 - **TailwindCSS v4** — utility-first styling
-- **Radix UI** — accessible UI primitives
+- **shadcn/ui** — UI component library (built on Radix UI primitives)
+- **Aceternity UI** — special effect components (3D cards, ripples, etc.)
 - **Motion** — animations
 - **Leaflet** + **React-Leaflet** — interactive map
 - **MAVLink** telemetry via REST API (`localhost:8088`)

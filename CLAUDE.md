@@ -8,7 +8,8 @@ GCS (Ground Control Station) frontend — a web app for real-time UAV/drone tele
 
 - **React 19** + **TypeScript** + **Vite** (SWC plugin)
 - **TailwindCSS v4** — all styling via utility classes (configured as Vite plugin, no `tailwind.config.js`)
-- **Radix UI** (`@radix-ui/themes`) — accessible component primitives, wrapped at the root via `<Theme>`
+- **shadcn/ui** (new-york style) — UI component library built on Radix UI primitives (`npx shadcn@latest add <component>`)
+- **Aceternity UI** — special effect components (3D cards, ripples, etc.) via `@aceternity` registry
 - **Motion** (`motion`) — all animations (do NOT use CSS animations or transitions for UI motion)
 - **Leaflet** + **React-Leaflet** — map rendering
 - **MAVLink REST API** at `http://localhost:8088` — drone telemetry source
@@ -19,8 +20,9 @@ GCS (Ground Control Station) frontend — a web app for real-time UAV/drone tele
 
 - Use **Tailwind utility classes** for all styling. No inline `style={}` props except where required by third-party libs (e.g., Leaflet).
 - Do NOT write custom CSS in `index.css` or create new `.css` files. The only CSS file is `src/index.css` which contains the Tailwind import.
-- Use Radix UI components for interactive UI elements (dialogs, dropdowns, tooltips, etc.).
-- Dark theme is the default (`<Theme appearance="dark">`).
+- Use **shadcn/ui** components for interactive UI elements (dialogs, dropdowns, tooltips, popovers, etc.). Add new components via `npx shadcn@latest add <component>`.
+- Use **Aceternity UI** for special visual effects. Add via `npx shadcn@latest add @aceternity/<component>`.
+- Dark theme is the default (CSS variables in `src/index.css`).
 - Prefer named Tailwind classes over arbitrary values (e.g., `z-5` over `z-[5]`).
 
 ### Animations
