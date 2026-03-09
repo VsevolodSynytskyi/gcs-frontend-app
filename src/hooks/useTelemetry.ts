@@ -5,7 +5,7 @@ import {
   type Telemetry,
 } from '@/api/telemetry'
 
-export type { ConnectionStatus, Telemetry } from '@/api/telemetry'
+export type { ConnectionStatus, SystemStatus, Telemetry } from '@/api/telemetry'
 
 const POLL_INTERVAL = 100
 const RECONNECT_THRESHOLD = 5
