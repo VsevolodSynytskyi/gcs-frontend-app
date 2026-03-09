@@ -54,8 +54,23 @@ function logStatusText(severity: number, text: string) {
   }
 }
 
-function logCommandAck(msg: Record<string, unknown>) {
+const KNOWN_COMMANDS = new Set(
+  Object.keys(COMMAND_NAMES).map(Number),
+)
+const KNOWN_COMMAND_TYPES = new Set(
+  Object.values(COMMAND_NAMES).map((n) => `MAV_CMD_${n}`),
+)
+
+function logCommandAck(
+  msg: Record<string, unknown>,
+): boolean {
   const cmdId = (msg.command as { type: string })?.type ?? msg.command
+
+  // Only show ACKs for commands our app sends
+  if (typeof cmdId === 'number' && !KNOWN_COMMANDS.has(cmdId)) return false
+  if (typeof cmdId === 'string' && !KNOWN_COMMAND_TYPES.has(cmdId))
+    return false
+
   const resultId = (msg.result as { type: string })?.type ?? msg.result
 
   let cmdName: string
@@ -85,6 +100,8 @@ function logCommandAck(msg: Record<string, unknown>) {
   } else {
     console.warn(formatted)
   }
+
+  return true
 }
 
 function parseSeverity(raw: unknown): number {
@@ -104,10 +121,13 @@ function parseSeverity(raw: unknown): number {
   return 6 // default to INFO
 }
 
+const DEDUP_WINDOW_MS = 500
+
 export function useLogStatusText(enabled: boolean) {
   const wsRef = useRef<WebSocket | null>(null)
   const reconnectTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
   const reconnectAttempt = useRef(0)
+  const recentMessages = useRef<Map<string, number>>(new Map())
 
   useEffect(() => {
     if (!enabled) {
@@ -117,7 +137,18 @@ export function useLogStatusText(enabled: boolean) {
       return
     }
 
+    let disposed = false
+
+    function isDuplicate(key: string): boolean {
+      const now = Date.now()
+      const last = recentMessages.current.get(key)
+      if (last && now - last < DEDUP_WINDOW_MS) return true
+      recentMessages.current.set(key, now)
+      return false
+    }
+
     function connect() {
+      if (disposed) return
       const ws = new WebSocket(WS_URL)
       wsRef.current = ws
 
@@ -135,11 +166,13 @@ export function useLogStatusText(enabled: boolean) {
             case 'STATUSTEXT': {
               const severity = parseSeverity(msg.severity)
               const text = (msg.text ?? '').replace(/\0/g, '').trim()
-              if (text) logStatusText(severity, text)
+              if (text && !isDuplicate(`ST:${severity}:${text}`))
+                logStatusText(severity, text)
               break
             }
             case 'COMMAND_ACK': {
-              logCommandAck(msg)
+              const key = `ACK:${msg.command?.type ?? msg.command}:${msg.result?.type ?? msg.result}`
+              if (!isDuplicate(key)) logCommandAck(msg)
               break
             }
           }
@@ -149,7 +182,7 @@ export function useLogStatusText(enabled: boolean) {
       }
 
       ws.onclose = () => {
-        scheduleReconnect()
+        if (!disposed) scheduleReconnect()
       }
 
       ws.onerror = () => {
@@ -169,6 +202,7 @@ export function useLogStatusText(enabled: boolean) {
     connect()
 
     return () => {
+      disposed = true
       clearTimeout(reconnectTimer.current)
       wsRef.current?.close()
       wsRef.current = null

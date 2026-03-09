@@ -20,7 +20,7 @@ const locateIcon = L.divIcon({
 })
 
 export function MapContextMenu() {
-  const { telemetry } = useTelemetry()
+  const { telemetry, connectionStatus } = useTelemetry()
   const [click, setClick] = useState<{
     latlng: LatLng
     x: number
@@ -40,7 +40,8 @@ export function MapContextMenu() {
   const items: MapPopoverItem[] = [
     {
       label: 'Go to location',
-      disabled: !telemetry,
+      disabled:
+        !telemetry?.armed || connectionStatus !== 'connected',
       onClick: async () => {
         if (!click || !telemetry) return
         const { lat, lng } = click.latlng

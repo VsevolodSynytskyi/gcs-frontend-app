@@ -34,6 +34,7 @@ export function useTelemetry() {
         ) {
           setConnectionStatus('reconnecting')
         } else {
+          setTelemetry(null)
           setConnectionStatus('disconnected')
         }
       }

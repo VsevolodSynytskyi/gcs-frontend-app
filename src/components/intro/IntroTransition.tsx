@@ -29,6 +29,8 @@ export function IntroTransition({
   children,
 }: IntroTransitionProps) {
   const { telemetry } = useTelemetry()
+  const mapMounted = useRef(false)
+  if (telemetry) mapMounted.current = true
   const containerRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
   const [cardClip, setCardClip] = useState(CLIP_DEFAULT)
@@ -56,7 +58,7 @@ export function IntroTransition({
 
   return (
     <div ref={containerRef} className="relative size-full">
-      {telemetry && (
+      {mapMounted.current && (
         <motion.div
           className={`absolute inset-0 z-4 overflow-hidden rounded-lg border border-white/10 ${isCard ? 'invisible' : 'visible'}`}
           initial={false}

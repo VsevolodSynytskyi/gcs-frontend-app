@@ -12,6 +12,8 @@ export interface Telemetry {
   armed: boolean
 }
 
+const STALE_THRESHOLD_MS = 3000
+
 export async function fetchTelemetry(): Promise<Telemetry> {
   const [posRes, battRes, hbRes] = await Promise.all([
     fetch(`${API_BASE}/GLOBAL_POSITION_INT`),
@@ -22,6 +24,11 @@ export async function fetchTelemetry(): Promise<Telemetry> {
   const pos = await posRes.json()
   const batt = await battRes.json()
   const hb = await hbRes.json()
+
+  const lastHeartbeat = Date.parse(hb.status.time.last_update)
+  if (Date.now() - lastHeartbeat > STALE_THRESHOLD_MS) {
+    throw new Error('Telemetry data is stale')
+  }
 
   return {
     position: {

@@ -1,8 +1,10 @@
 import { motion } from 'motion/react'
 import { GlassCard } from '@/components/ui/GlassCard'
+import { NoData } from '@/components/ui/NoData'
+import { clsx } from 'clsx'
 
 interface BatteryCardProps {
-  percentage: number
+  percentage?: number
 }
 
 function barColor(pct: number): string {
@@ -20,14 +22,19 @@ export function BatteryCard({ percentage }: BatteryCardProps) {
             Battery
           </span>
           <span className="text-foreground font-mono text-base">
-            {percentage}%
+            {percentage != null ? `${percentage}%` : <NoData />}
           </span>
         </div>
         <div className="bg-foreground/10 h-2.5 w-full overflow-hidden rounded-full">
           <motion.div
-            className={`h-full rounded-full ${barColor(percentage)}`}
+            className={clsx(
+              `h-full rounded-full`,
+              percentage !== undefined && barColor(percentage),
+            )}
             initial={false}
-            animate={{ width: `${Math.max(0, Math.min(100, percentage))}%` }}
+            animate={{
+              width: `${Math.max(0, Math.min(100, percentage || 0))}%`,
+            }}
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
           />
         </div>

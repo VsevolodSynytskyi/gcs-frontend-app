@@ -1,9 +1,10 @@
-import { useRef, useLayoutEffect } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { useMotionValue, useSpring } from 'motion/react'
+import { NoData } from '@/components/ui/NoData.tsx'
 
 interface CompassProps {
   heading: number | null
-  groundSpeed: number
+  groundSpeed: number | null
 }
 
 const CARDINALS = [
@@ -28,6 +29,8 @@ export function Compass({ heading, groundSpeed }: CompassProps) {
   const pointerRef = useRef<SVGGElement>(null)
   const labelRef = useRef<SVGGElement>(null)
   const hasHeading = heading !== null
+  const headingText = hasHeading ? `${heading.toFixed(0)}°` : <NoData />
+  const speedText = groundSpeed != null ? groundSpeed.toFixed(1) : <NoData />
 
   useLayoutEffect(() => {
     if (!hasHeading) return
@@ -114,7 +117,7 @@ export function Compass({ heading, groundSpeed }: CompassProps) {
             dominantBaseline="central"
             className="fill-foreground font-mono text-xs"
           >
-            {heading.toFixed(0)}&deg;
+            {headingText}
           </text>
         </g>
       )}
@@ -127,7 +130,7 @@ export function Compass({ heading, groundSpeed }: CompassProps) {
         dominantBaseline="central"
         className="fill-foreground text-2xl"
       >
-        {groundSpeed.toFixed(1)}
+        {speedText}
       </text>
       <text
         x="100"
