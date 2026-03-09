@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  sitl:
+    image: orthuk/ardupilot-sitl-debian
+    container_name: sitl
+    command: >
+      /home/docker/ardupilot/build/sitl/bin/arducopter
+      -S -I0
+      --home -35.3632,149.1652,584,270
+      --model +
+      --speedup 1
+      --defaults /home/docker/ardupilot/Tools/autotest/default_params/copter.parm
+    ports:
+      - "5760:5760"
+    networks:
+      - drone-net
+
+  mavlink2rest:
+    image: patrickelectric/mavlink2rest
+    container_name: mavlink2rest
+    depends_on:
+      - sitl
+    command: --connect tcpout:sitl:5760
+    ports:
+      - "8088:8088"
+    networks:
+      - drone-net
+
+  gcs:
+    build: .
+    container_name: gcs
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./src:/app/src
+    depends_on:
+      - mavlink2rest
+    networks:
+      - drone-net
+
+networks:
+  drone-net:
+    driver: bridge

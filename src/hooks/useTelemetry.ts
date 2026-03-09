@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import {
   fetchTelemetry,
+  requestDataStreams,
   type ConnectionStatus,
   type Telemetry,
 } from '@/api/telemetry'
@@ -40,6 +41,7 @@ export function useTelemetry() {
       }
     }
 
+    requestDataStreams().catch(() => {})
     const interval = setInterval(poll, POLL_INTERVAL)
     return () => clearInterval(interval)
   }, [])
