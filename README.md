@@ -16,6 +16,34 @@ Ground Control Station web application for UAV/drone telemetry and mission contr
 
 ## Getting Started
 
+### Docker (recommended)
+
+Run the full stack (frontend + ArduPilot simulator + MAVLink API) with a single command:
+
+```bash
+docker compose up --build
+```
+
+This starts three services:
+
+| Service | Description | URL |
+| --- | --- | --- |
+| **gcs** | Frontend (Vite dev server) | http://localhost:5173 |
+| **mavlink2rest** | MAVLink REST API | http://localhost:8088 |
+| **sitl** | ArduPilot SITL simulator | — |
+
+Open http://localhost:5173 in your browser. It may take 30–60 seconds for the simulator to initialize.
+
+To stop:
+
+```bash
+docker compose down
+```
+
+### Without Docker
+
+Requires a running [mavlink2rest](https://github.com/patrickelectric/mavlink2rest) instance on `localhost:8088`.
+
 ```bash
 npm install
 npm run dev
