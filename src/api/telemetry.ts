@@ -35,8 +35,7 @@ export async function fetchTelemetry(): Promise<Telemetry> {
     ),
     verticalSpeed: -(pos.message.vz / 100),
     battery: batt.message.battery_remaining,
-    armed: String(hb.message.base_mode).includes(
-      'MAV_MODE_FLAG_SAFETY_ARMED',
-    ),
+
+    armed: String(hb.message.base_mode).includes('MAV_MODE_FLAG_SAFETY_ARMED'),
   }
 }
