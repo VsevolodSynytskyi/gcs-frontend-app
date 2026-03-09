@@ -32,8 +32,10 @@ function App() {
           <>
             <LayerSwitcher />
             {map && (
-              <div className="absolute inset-y-0 right-3 z-1000 flex items-center">
-                <MapControls map={map} position={position} />
+              <div className="pointer-events-none absolute inset-y-0 right-3 z-1000 flex items-center">
+                <div className={`pointer-events-auto`}>
+                  <MapControls map={map} position={position} />
+                </div>
               </div>
             )}
             <TelemetryPanel />
