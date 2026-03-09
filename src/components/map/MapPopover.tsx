@@ -33,9 +33,7 @@ export function MapPopover({ open, x, y, items, onClose }: MapPopoverProps) {
       </PopoverAnchor>
       <PopoverContent
         className="w-auto p-1"
-        side="bottom"
-        sideOffset={8}
-        align="start"
+        sideOffset={16}
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <div className="flex items-stretch">
@@ -43,7 +41,6 @@ export function MapPopover({ open, x, y, items, onClose }: MapPopoverProps) {
             {items.map((item) => (
               <Button
                 key={item.label}
-                variant="ghost"
                 size="sm"
                 className="w-full justify-start gap-2"
                 disabled={item.disabled}
@@ -54,7 +51,6 @@ export function MapPopover({ open, x, y, items, onClose }: MapPopoverProps) {
               </Button>
             ))}
           </div>
-          <div className="bg-border mx-1 w-px self-stretch" />
           <Button variant="ghost" size="icon-sm" onClick={onClose}>
             <X className="size-4" />
           </Button>
