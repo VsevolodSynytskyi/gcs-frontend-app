@@ -11,15 +11,12 @@ const MAX_WIDTH_PX = 100
 function getRoundNum(num: number): number {
   const pow10 = Math.pow(10, (Math.floor(num) + '').length - 1)
   const d = num / pow10
-  const rounded =
-    d >= 10 ? 10 : d >= 5 ? 5 : d >= 3 ? 3 : d >= 2 ? 2 : 1
+  const rounded = d >= 10 ? 10 : d >= 5 ? 5 : d >= 3 ? 3 : d >= 2 ? 2 : 1
   return pow10 * rounded
 }
 
 function formatMetric(meters: number): string {
-  return meters < 1000
-    ? `${meters} m`
-    : `${meters / 1000} km`
+  return meters < 1000 ? `${meters} m` : `${meters / 1000} km`
 }
 
 function computeScale(map: L.Map): MapScale {
@@ -38,9 +35,7 @@ function computeScale(map: L.Map): MapScale {
 
 export function useMapScale(): MapScale {
   const map = useMap()
-  const [scale, setScale] = useState<MapScale>(() =>
-    computeScale(map),
-  )
+  const [scale, setScale] = useState<MapScale>(() => computeScale(map))
 
   const updateScale = useCallback(() => {
     setScale(computeScale(map))
