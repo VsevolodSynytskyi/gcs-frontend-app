@@ -63,9 +63,46 @@ export async function land() {
   await sendCommand('MAV_CMD_NAV_LAND')
 }
 
-// MAV_CMD_DO_REPOSITION: param5 = lat, param6 = lon, param7 = alt
 export async function goToLocation(lat: number, lon: number, alt: number) {
-  await sendCommand('MAV_CMD_DO_REPOSITION', [0, 0, 0, 0, lat, lon, alt])
+  await setModeGuided()
+
+  // Use COMMAND_INT (not COMMAND_LONG) for positional commands —
+  // integer lat/lon avoids float32 precision loss that causes UNSUPPORTED
+  const message = {
+    header: {
+      system_id: 255,
+      component_id: 240,
+      sequence: 0,
+    },
+    message: {
+      type: 'COMMAND_INT',
+      target_system: 1,
+      target_component: 1,
+      frame: { type: 'MAV_FRAME_GLOBAL_RELATIVE_ALT_INT' },
+      command: { type: 'MAV_CMD_DO_REPOSITION' },
+      current: 0,
+      autocontinue: 0,
+      param1: 0,
+      param2: 0,
+      param3: 0,
+      param4: 0,
+      x: Math.round(lat * 1e7),
+      y: Math.round(lon * 1e7),
+      z: alt,
+    },
+  }
+
+  const response = await fetch(COMMAND_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(message),
+  })
+
+  if (!response.ok) {
+    const err = new Error(`Go to location failed (${response.status})`)
+    addToast(err.message, 'error')
+    throw err
+  }
 }
 
 export async function setModeGuided() {

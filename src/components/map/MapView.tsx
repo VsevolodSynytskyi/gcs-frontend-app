@@ -8,6 +8,7 @@ import { TILE_LAYERS } from './tileLayers'
 import { DroneMarker } from './DroneMarker'
 import { MapResizeObserver } from './MapResizeObserver'
 import { MapScale } from './MapScale'
+import { MapContextMenu } from './MapContextMenu'
 
 interface MapViewProps {
   onMapReady?: (map: Map) => void
@@ -36,12 +37,10 @@ export function MapView({ onMapReady }: MapViewProps) {
       />
       <MapResizeObserver />
       {telemetry && (
-        <DroneMarker
-          position={position}
-          heading={telemetry.heading}
-        />
+        <DroneMarker position={position} heading={telemetry.heading} />
       )}
       <MapScale />
+      <MapContextMenu />
     </MapContainer>
   )
 }
