@@ -1,6 +1,9 @@
-import { useMemo } from 'react'
+import { useRef, useLayoutEffect } from 'react'
 import { Marker } from 'react-leaflet'
 import L from 'leaflet'
+import { useMotionValue, useSpring } from 'motion/react'
+
+const SPRING_CONFIG = { stiffness: 80, damping: 20 }
 
 function createDroneIcon(heading: number) {
   return L.divIcon({
@@ -19,6 +22,36 @@ interface DroneMarkerProps {
 }
 
 export function DroneMarker({ position, heading }: DroneMarkerProps) {
-  const icon = useMemo(() => createDroneIcon(heading), [heading])
-  return <Marker position={position} icon={icon} />
+  const markerRef = useRef<L.Marker>(null)
+
+  // Heading spring (same unwrapping logic as Compass)
+  const unwrappedHeading = useRef(heading)
+  const motionHeading = useMotionValue(heading)
+  const springHeading = useSpring(motionHeading, SPRING_CONFIG)
+
+  // Update heading with unwrapping to find shortest rotation path
+  useLayoutEffect(() => {
+    const current = ((unwrappedHeading.current % 360) + 360) % 360
+    let delta = heading - current
+    if (delta > 180) delta -= 360
+    if (delta < -180) delta += 360
+    unwrappedHeading.current += delta
+    motionHeading.set(unwrappedHeading.current)
+  }, [heading, motionHeading])
+
+  // Apply spring rotation to the Leaflet marker's SVG
+  useLayoutEffect(() => {
+    return springHeading.on('change', (v) => {
+      const el = markerRef.current?.getElement()
+      const svg = el?.querySelector('svg')
+      if (svg) {
+        const h = ((v % 360) + 360) % 360
+        svg.style.transform = `rotate(${h + 45}deg)`
+      }
+    })
+  }, [springHeading])
+
+  const icon = createDroneIcon(heading)
+
+  return <Marker ref={markerRef} position={position} icon={icon} />
 }
