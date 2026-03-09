@@ -29,7 +29,7 @@ export function MapPopover({
   onClose,
 }: MapPopoverProps) {
   return (
-    <Popover open={open} onOpenChange={(o) => !o && onClose()}>
+    <Popover key={`${x}-${y}`} open={open} onOpenChange={(o) => !o && onClose()}>
       <PopoverAnchor asChild>
         <div
           className="pointer-events-none absolute"
