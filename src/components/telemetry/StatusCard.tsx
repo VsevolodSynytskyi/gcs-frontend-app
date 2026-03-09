@@ -70,7 +70,7 @@ export function StatusCard() {
 
           <div>
             <span className="text-muted-foreground mb-1 block text-xs tracking-wider uppercase">
-              Status
+              Motors
             </span>
             {armed != null ? (
               <Badge variant={armed ? 'default' : 'destructive'}>
