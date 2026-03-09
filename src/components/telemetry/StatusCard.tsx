@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { type ConnectionStatus, useTelemetry } from '@/hooks/useTelemetry'
+import { NoData } from '@/components/ui/NoData'
 import { armAndTakeoff, land } from '@/api/droneControl'
 import type { VariantProps } from 'class-variance-authority'
 
@@ -20,7 +21,7 @@ const connectionBadge: Record<
 
 export function StatusCard() {
   const { telemetry, connectionStatus } = useTelemetry()
-  const armed = telemetry?.armed ?? false
+  const armed = telemetry?.armed
   const connected = connectionStatus === 'connected'
   const onTakeOffClick = async () => {
     try {
@@ -71,9 +72,13 @@ export function StatusCard() {
             <span className="text-muted-foreground mb-1 block text-xs tracking-wider uppercase">
               Status
             </span>
-            <Badge variant={armed ? 'default' : 'destructive'}>
-              {armed ? 'Armed' : 'Disarmed'}
-            </Badge>
+            {armed != null ? (
+              <Badge variant={armed ? 'default' : 'destructive'}>
+                {armed ? 'Armed' : 'Disarmed'}
+              </Badge>
+            ) : (
+              <NoData />
+            )}
           </div>
         </div>
 
@@ -82,7 +87,7 @@ export function StatusCard() {
         <div className="grid grid-cols-2 gap-2">
           <Button
             className="w-full"
-            disabled={!connected || armed}
+            disabled={!connected || !!armed}
             onClick={onTakeOffClick}
           >
             Take off
