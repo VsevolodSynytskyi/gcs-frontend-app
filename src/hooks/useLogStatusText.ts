@@ -61,22 +61,17 @@ function logStatusText(severity: number, text: string) {
   }
 }
 
-const KNOWN_COMMANDS = new Set(
-  Object.keys(COMMAND_NAMES).map(Number),
-)
+const KNOWN_COMMANDS = new Set(Object.keys(COMMAND_NAMES).map(Number))
 const KNOWN_COMMAND_TYPES = new Set(
   Object.values(COMMAND_NAMES).map((n) => `MAV_CMD_${n}`),
 )
 
-function logCommandAck(
-  msg: Record<string, unknown>,
-): boolean {
+function logCommandAck(msg: Record<string, unknown>): boolean {
   const cmdId = (msg.command as { type: string })?.type ?? msg.command
 
   // Only show ACKs for commands our app sends
   if (typeof cmdId === 'number' && !KNOWN_COMMANDS.has(cmdId)) return false
-  if (typeof cmdId === 'string' && !KNOWN_COMMAND_TYPES.has(cmdId))
-    return false
+  if (typeof cmdId === 'string' && !KNOWN_COMMAND_TYPES.has(cmdId)) return false
 
   const resultId = (msg.result as { type: string })?.type ?? msg.result
 

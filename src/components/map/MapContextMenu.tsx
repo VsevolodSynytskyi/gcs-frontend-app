@@ -40,8 +40,7 @@ export function MapContextMenu() {
   const items: MapPopoverItem[] = [
     {
       label: 'Go to location',
-      disabled:
-        !telemetry?.armed || connectionStatus !== 'connected',
+      disabled: !telemetry?.armed || connectionStatus !== 'connected',
       onClick: async () => {
         if (!click || !telemetry) return
         const { lat, lng } = click.latlng

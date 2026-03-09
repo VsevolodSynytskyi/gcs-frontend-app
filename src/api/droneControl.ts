@@ -35,7 +35,6 @@ async function sendCommand(command: string, params: number[] = []) {
     if (!response.ok) {
       throw new Error(`Command ${command} failed (${response.status})`)
     }
-
   } catch (error) {
     addToast(
       error instanceof Error ? error.message : 'Unknown command error',

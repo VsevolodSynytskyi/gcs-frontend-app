@@ -20,9 +20,11 @@ export function NavigationCard({
   const altitudeText =
     altitude != null ? `${altitude.toFixed(1)} m` : <NoData />
   const verticalSpeedText =
-    verticalSpeed != null
-      ? `${verticalSpeed > 0 ? '+' : ''}${verticalSpeed.toFixed(1)} m/s`
-      : <NoData />
+    verticalSpeed != null ? (
+      `${verticalSpeed > 0 ? '+' : ''}${verticalSpeed.toFixed(1)} m/s`
+    ) : (
+      <NoData />
+    )
 
   return (
     <GlassCard>

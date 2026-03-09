@@ -50,14 +50,13 @@ const REQUIRED_EKF_FLAGS = [
 ] as const
 
 export async function fetchTelemetry(): Promise<Telemetry> {
-  const [posRes, battRes, hbRes, gpsRes, ekfRes] =
-    await Promise.all([
-      fetch(`${API_BASE}/GLOBAL_POSITION_INT`),
-      fetch(`${API_BASE}/SYS_STATUS`),
-      fetch(`${API_BASE}/HEARTBEAT`),
-      fetch(`${API_BASE}/GPS_RAW_INT`),
-      fetch(`${API_BASE}/EKF_STATUS_REPORT`),
-    ])
+  const [posRes, battRes, hbRes, gpsRes, ekfRes] = await Promise.all([
+    fetch(`${API_BASE}/GLOBAL_POSITION_INT`),
+    fetch(`${API_BASE}/SYS_STATUS`),
+    fetch(`${API_BASE}/HEARTBEAT`),
+    fetch(`${API_BASE}/GPS_RAW_INT`),
+    fetch(`${API_BASE}/EKF_STATUS_REPORT`),
+  ])
 
   const pos = await posRes.json()
   const batt = await battRes.json()
@@ -71,15 +70,10 @@ export async function fetchTelemetry(): Promise<Telemetry> {
   }
 
   // Check 1: All enabled sensors must be healthy
-  const enabled = parseFlags(
-    batt.message.onboard_control_sensors_enabled,
-  )
-  const health = parseFlags(
-    batt.message.onboard_control_sensors_health,
-  )
+  const enabled = parseFlags(batt.message.onboard_control_sensors_enabled)
+  const health = parseFlags(batt.message.onboard_control_sensors_health)
   const allSensorsHealthy =
-    enabled.size > 0 &&
-    [...enabled].every((sensor) => health.has(sensor))
+    enabled.size > 0 && [...enabled].every((sensor) => health.has(sensor))
 
   // Check 2: GPS must have a 3D fix or better
   const gpsFixType: string = gps.message.fix_type?.type ?? ''
@@ -87,9 +81,7 @@ export async function fetchTelemetry(): Promise<Telemetry> {
 
   // Check 3: EKF must have converged with a position estimate
   const ekfFlags = parseFlags(ekf.message.flags ?? '')
-  const ekfReady = REQUIRED_EKF_FLAGS.every((flag) =>
-    ekfFlags.has(flag),
-  )
+  const ekfReady = REQUIRED_EKF_FLAGS.every((flag) => ekfFlags.has(flag))
 
   return {
     position: {
@@ -99,14 +91,11 @@ export async function fetchTelemetry(): Promise<Telemetry> {
     },
     heading: pos.message.hdg / 100,
     groundSpeed: Math.sqrt(
-      Math.pow(pos.message.vx / 100, 2) +
-        Math.pow(pos.message.vy / 100, 2),
+      Math.pow(pos.message.vx / 100, 2) + Math.pow(pos.message.vy / 100, 2),
     ),
     verticalSpeed: -(pos.message.vz / 100),
     battery: batt.message.battery_remaining,
-    armed: String(hb.message.base_mode).includes(
-      'MAV_MODE_FLAG_SAFETY_ARMED',
-    ),
+    armed: String(hb.message.base_mode).includes('MAV_MODE_FLAG_SAFETY_ARMED'),
     systemStatus: hb.message.system_status.type as SystemStatus,
     sensorsHealthy: allSensorsHealthy && hasGpsFix && ekfReady,
   }
