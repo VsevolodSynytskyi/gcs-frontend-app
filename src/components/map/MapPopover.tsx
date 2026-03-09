@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { X } from 'lucide-react'
 import {
   Popover,
   PopoverAnchor,
@@ -43,19 +44,31 @@ export function MapPopover({
         align="start"
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
-        {items.map((item) => (
+        <div className="flex items-stretch">
+          <div className="flex flex-col">
+            {items.map((item) => (
+              <Button
+                key={item.label}
+                variant="ghost"
+                size="sm"
+                className="w-full justify-start gap-2"
+                disabled={item.disabled}
+                onClick={item.onClick}
+              >
+                {item.icon}
+                {item.label}
+              </Button>
+            ))}
+          </div>
+          <div className="bg-border mx-1 w-px self-stretch" />
           <Button
-            key={item.label}
             variant="ghost"
-            size="sm"
-            className="w-full justify-start gap-2"
-            disabled={item.disabled}
-            onClick={item.onClick}
+            size="icon-sm"
+            onClick={onClose}
           >
-            {item.icon}
-            {item.label}
+            <X className="size-4" />
           </Button>
-        ))}
+        </div>
       </PopoverContent>
     </Popover>
   )
