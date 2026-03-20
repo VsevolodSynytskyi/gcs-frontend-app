@@ -6,7 +6,7 @@ import type { ConnectionStatus, SystemStatus } from '@/hooks/useTelemetry'
 
 type BadgeVariant = NonNullable<VariantProps<typeof badgeVariants>['variant']>
 
-export type DroneStatus =
+type DroneStatus =
   | 'disconnected'
   | 'connecting'
   | 'initializing'
@@ -18,6 +18,13 @@ export type DroneStatus =
   | 'critical'
   | 'emergency'
   | 'poweroff'
+
+type DroneStatusBadgeProps = {
+  connectionStatus: ConnectionStatus
+  systemStatus?: SystemStatus
+  sensorsHealthy?: boolean
+  armed?: boolean
+}
 
 const STATUS_CONFIG: Record<
   DroneStatus,
@@ -91,21 +98,20 @@ const SYSTEM_STATUS_MAP: Record<SystemStatus, DroneStatus> = {
   MAV_STATE_POWEROFF: 'poweroff',
 }
 
-export const resolveDroneStatus: (args: {
-  connectionStatus: ConnectionStatus
-  systemStatus?: SystemStatus
-  sensorsHealthy: boolean
-  armed?: boolean
-}) => DroneStatus = ({
+const resolveDroneStatus: (
+  args: DroneStatusBadgeProps,
+) => DroneStatus | null = ({
   connectionStatus,
   systemStatus,
   sensorsHealthy,
   armed,
 }) => {
-  if (connectionStatus === 'disconnected') return 'disconnected'
-  if (connectionStatus === 'reconnecting') return 'connecting'
+  if (!systemStatus) {
+    if (connectionStatus === 'reconnecting') return 'connecting'
+    return null
+  }
 
-  if (!systemStatus) return 'connecting'
+  if (connectionStatus === 'disconnected') return 'disconnected'
 
   if (armed) return 'armed'
 
@@ -116,9 +122,16 @@ export const resolveDroneStatus: (args: {
   return mapped
 }
 
-export const DroneStatusBadge: FC<{ status: DroneStatus }> = ({
-  status,
-}) => {
+export const DroneStatusBadge: FC<DroneStatusBadgeProps> = (props) => {
+  const status = resolveDroneStatus(props)
+
+  if (!status)
+    return (
+      <Badge variant="secondary" className="invisible">
+        Loading
+      </Badge>
+    )
+
   const { variant, label, pulsing } = STATUS_CONFIG[status]
 
   return (

@@ -4,23 +4,17 @@ import { Separator } from '@/components/ui/separator'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { useTelemetry } from '@/hooks/useTelemetry'
 import { armAndTakeoff, land } from '@/api/droneControl'
-import {
-  DroneStatusBadge,
-  resolveDroneStatus,
-} from '@/components/telemetry/DroneStatusBadge'
+import { DroneStatusBadge } from '@/components/telemetry/DroneStatusBadge'
 
 export const StatusCard: FC = () => {
   const { telemetry, connectionStatus } = useTelemetry()
 
-  const droneStatus = resolveDroneStatus({
-    connectionStatus,
-    systemStatus: telemetry?.systemStatus,
-    sensorsHealthy: telemetry?.sensorsHealthy ?? false,
-    armed: telemetry?.armed,
-  })
-
-  const canTakeOff = droneStatus === 'ready'
-  const canLand = droneStatus === 'armed'
+  const canTakeOff =
+    connectionStatus === 'connected' &&
+    telemetry?.systemStatus === 'MAV_STATE_STANDBY' &&
+    telemetry?.sensorsHealthy &&
+    !telemetry?.armed
+  const canLand = telemetry?.armed === true
 
   const onTakeOffClick = async () => {
     try {
@@ -37,11 +31,18 @@ export const StatusCard: FC = () => {
     }
   }
 
+  console.log(`StatusCard`)
+
   return (
     <GlassCard>
       <div className="flex flex-col gap-3">
         <div>
-          <DroneStatusBadge status={droneStatus} />
+          <DroneStatusBadge
+            connectionStatus={connectionStatus}
+            systemStatus={telemetry?.systemStatus}
+            sensorsHealthy={telemetry?.sensorsHealthy}
+            armed={telemetry?.armed}
+          />
         </div>
 
         <Separator />
