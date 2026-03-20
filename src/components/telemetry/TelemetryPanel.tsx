@@ -12,9 +12,9 @@ export const TelemetryPanel: FC = () => {
 
   return (
     <motion.div
-      initial={{ x: 40 }}
+      initial={{ x: '-110%' }}
       animate={{ x: 0 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
+      exit={{ x: '-110%' }}
       className="absolute top-1/2 left-4 z-1000 w-72 -translate-y-1/2"
     >
       <Perspective3DContainer>
