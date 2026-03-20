@@ -32,10 +32,10 @@ const emit: () => void = () => {
   listeners.forEach((l) => l())
 }
 
-export const addToast: (
-  message: string,
-  variant?: ToastVariant,
-) => void = (message, variant = 'default') => {
+export const addToast: (message: string, variant?: ToastVariant) => void = (
+  message,
+  variant = 'default',
+) => {
   const id = nextId++
   toasts = [...toasts, { id, message, variant }]
   emit()

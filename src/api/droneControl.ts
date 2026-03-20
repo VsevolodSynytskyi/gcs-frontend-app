@@ -120,9 +120,9 @@ export const setModeGuided: () => Promise<void> = async () => {
   await sendCommand('MAV_CMD_DO_SET_MODE', [1, 4])
 }
 
-export const armAndTakeoff: (
-  altitude?: number,
-) => Promise<void> = async (altitude = 3) => {
+export const armAndTakeoff: (altitude?: number) => Promise<void> = async (
+  altitude = 3,
+) => {
   await setModeGuided()
   await arm()
   await takeoff(altitude)

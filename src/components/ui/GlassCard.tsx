@@ -6,10 +6,7 @@ interface GlassCardProps {
   className?: string
 }
 
-export const GlassCard: FC<GlassCardProps> = ({
-  children,
-  className,
-}) => {
+export const GlassCard: FC<GlassCardProps> = ({ children, className }) => {
   return (
     <div
       className={cn(

@@ -5,11 +5,7 @@ import Peer from 'peerjs'
 // ready       — PeerJS connected to signaling server, can now call peers
 // connecting  — call initiated, waiting for remote peer to respond
 // streaming   — connection established, video is flowing
-type VideoReceiverStatus =
-  | 'initializing'
-  | 'ready'
-  | 'connecting'
-  | 'streaming'
+type VideoReceiverStatus = 'initializing' | 'ready' | 'connecting' | 'streaming'
 
 export const useVideoReceiver: () => {
   status: VideoReceiverStatus

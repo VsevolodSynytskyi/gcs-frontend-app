@@ -12,7 +12,7 @@ services:
       --speedup 1
       --defaults /home/docker/ardupilot/Tools/autotest/default_params/copter.parm
     ports:
-      - "5760:5760"
+      - '5760:5760'
     networks:
       - drone-net
 
@@ -23,7 +23,7 @@ services:
       - sitl
     command: --connect tcpout:sitl:5760
     ports:
-      - "8088:8088"
+      - '8088:8088'
     networks:
       - drone-net
 
@@ -31,7 +31,7 @@ services:
     build: .
     container_name: gcs
     ports:
-      - "5173:5173"
+      - '5173:5173'
     volumes:
       - ./src:/app/src
     depends_on:

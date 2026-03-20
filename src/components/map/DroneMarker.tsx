@@ -21,10 +21,7 @@ interface DroneMarkerProps {
   heading: number
 }
 
-export const DroneMarker: FC<DroneMarkerProps> = ({
-  position,
-  heading,
-}) => {
+export const DroneMarker: FC<DroneMarkerProps> = ({ position, heading }) => {
   const markerRef = useRef<L.Marker>(null)
 
   // Heading spring (same unwrapping logic as Compass)
