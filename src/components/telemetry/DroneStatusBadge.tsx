@@ -2,7 +2,7 @@ import type { FC } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Badge, type badgeVariants } from '@/components/ui/badge'
 import type { VariantProps } from 'class-variance-authority'
-import type { ConnectionStatus, SystemStatus } from '@/hooks/useTelemetry'
+import type { ConnectionStatus, SystemStatus } from '@/api/telemetry'
 
 type BadgeVariant = NonNullable<VariantProps<typeof badgeVariants>['variant']>
 

@@ -2,19 +2,24 @@ import type { FC } from 'react'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { GlassCard } from '@/components/ui/GlassCard'
-import { useTelemetry } from '@/hooks/useTelemetry'
+import { useTelemetrySelector } from '@/hooks/useTelemetrySelector'
 import { armAndTakeoff, land } from '@/api/droneControl'
 import { DroneStatusBadge } from '@/components/telemetry/DroneStatusBadge'
 
 export const StatusCard: FC = () => {
-  const { telemetry, connectionStatus } = useTelemetry()
+  const connectionStatus = useTelemetrySelector((s) => s.connectionStatus)
+  const systemStatus = useTelemetrySelector((s) => s.telemetry?.systemStatus)
+  const sensorsHealthy = useTelemetrySelector(
+    (s) => s.telemetry?.sensorsHealthy,
+  )
+  const armed = useTelemetrySelector((s) => s.telemetry?.armed)
 
   const canTakeOff =
     connectionStatus === 'connected' &&
-    telemetry?.systemStatus === 'MAV_STATE_STANDBY' &&
-    telemetry?.sensorsHealthy &&
-    !telemetry?.armed
-  const canLand = telemetry?.armed === true
+    systemStatus === 'MAV_STATE_STANDBY' &&
+    sensorsHealthy &&
+    !armed
+  const canLand = armed === true
 
   const onTakeOffClick = async () => {
     try {
@@ -39,9 +44,9 @@ export const StatusCard: FC = () => {
         <div>
           <DroneStatusBadge
             connectionStatus={connectionStatus}
-            systemStatus={telemetry?.systemStatus}
-            sensorsHealthy={telemetry?.sensorsHealthy}
-            armed={telemetry?.armed}
+            systemStatus={systemStatus}
+            sensorsHealthy={sensorsHealthy}
+            armed={armed}
           />
         </div>
 

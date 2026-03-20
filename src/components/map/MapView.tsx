@@ -2,7 +2,7 @@ import { type FC, useState } from 'react'
 import { MapContainer, TileLayer } from 'react-leaflet'
 import type { Map } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { useTelemetry } from '@/context/TelemetryContext'
+import { useTelemetrySelector } from '@/hooks/useTelemetrySelector'
 import { useAppearance } from '@/context/AppearanceContext'
 import { useLastPosition } from '@/hooks/useLastPosition'
 import { TILE_LAYERS } from './tileLayers'
@@ -14,7 +14,7 @@ import { MapControls } from './MapControls'
 import { LayerSwitcher } from './LayerSwitcher'
 
 export const MapView: FC = () => {
-  const { telemetry } = useTelemetry()
+  const telemetry = useTelemetrySelector((s) => s.telemetry)
   const { mapLayer } = useAppearance()
   const position = useLastPosition(telemetry)
   const layer = TILE_LAYERS[mapLayer]

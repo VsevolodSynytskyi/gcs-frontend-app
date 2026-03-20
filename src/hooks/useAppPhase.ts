@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import type { ConnectionStatus } from './useTelemetry'
+import type { ConnectionStatus } from '@/api/telemetry'
 
 export type AppPhase = 'idle' | 'ready' | 'transitioning' | 'active'
 

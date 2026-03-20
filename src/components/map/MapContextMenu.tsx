@@ -4,7 +4,7 @@ import { Marker, useMapEvents } from 'react-leaflet'
 import type { LatLng, LeafletMouseEvent } from 'leaflet'
 import L from 'leaflet'
 import { Locate } from 'lucide-react'
-import { useTelemetry } from '@/context/TelemetryContext'
+import { useTelemetrySelector } from '@/hooks/useTelemetrySelector'
 import { goToLocation } from '@/api/droneControl'
 import { MapPopover, type MapPopoverItem } from './MapPopover'
 
@@ -20,7 +20,10 @@ const locateIcon = L.divIcon({
 })
 
 export const MapContextMenu: FC = () => {
-  const { telemetry, connectionStatus } = useTelemetry()
+  const connectionStatus = useTelemetrySelector((s) => s.connectionStatus)
+  const armed = useTelemetrySelector((s) => s.telemetry?.armed)
+  const alt = useTelemetrySelector((s) => s.telemetry?.position.alt)
+  const hasTelemetry = useTelemetrySelector((s) => s.telemetry !== null)
   const [click, setClick] = useState<{
     latlng: LatLng
     x: number
@@ -40,11 +43,11 @@ export const MapContextMenu: FC = () => {
   const items: MapPopoverItem[] = [
     {
       label: 'Go to location',
-      disabled: !telemetry?.armed || connectionStatus !== 'connected',
+      disabled: !armed || connectionStatus !== 'connected',
       onClick: async () => {
-        if (!click || !telemetry) return
+        if (!click || !hasTelemetry || alt == null) return
         const { lat, lng } = click.latlng
-        await goToLocation(lat, lng, telemetry.position.alt)
+        await goToLocation(lat, lng, alt)
         setClick(null)
       },
     },

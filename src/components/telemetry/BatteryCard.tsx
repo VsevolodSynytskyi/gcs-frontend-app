@@ -2,11 +2,8 @@ import type { FC } from 'react'
 import { motion } from 'motion/react'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { NoData } from '@/components/ui/NoData'
+import { useTelemetrySelector } from '@/hooks/useTelemetrySelector'
 import { clsx } from 'clsx'
-
-interface BatteryCardProps {
-  percentage?: number
-}
 
 const barColor: (pct: number) => string = (pct) => {
   if (pct >= 60) return 'bg-green-500'
@@ -14,7 +11,9 @@ const barColor: (pct: number) => string = (pct) => {
   return 'bg-red-500'
 }
 
-export const BatteryCard: FC<BatteryCardProps> = ({ percentage }) => {
+export const BatteryCard: FC = () => {
+  const percentage = useTelemetrySelector((s) => s.telemetry?.battery)
+
   return (
     <GlassCard>
       <div className="flex flex-col gap-2">

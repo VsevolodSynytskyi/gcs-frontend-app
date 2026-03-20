@@ -4,7 +4,7 @@ import { Crosshair, Minus, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tooltip } from '@/components/ui/tooltip'
 import { GlassCard } from '@/components/ui/GlassCard.tsx'
-import { useTelemetry } from '@/context/TelemetryContext'
+import { useTelemetrySelector } from '@/hooks/useTelemetrySelector'
 
 interface MapControlsProps {
   map: Map
@@ -12,8 +12,9 @@ interface MapControlsProps {
 }
 
 export const MapControls: FC<MapControlsProps> = ({ map, position }) => {
-  const { connectionStatus } = useTelemetry()
-  const connected = connectionStatus === 'connected'
+  const connected = useTelemetrySelector(
+    (s) => s.connectionStatus === 'connected',
+  )
   const handleRecenter = useCallback(() => {
     map.setView(position, map.getZoom())
   }, [map, position])

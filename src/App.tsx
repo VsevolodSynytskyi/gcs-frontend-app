@@ -1,7 +1,7 @@
 import { type FC, useState } from 'react'
 import { AnimatePresence } from 'motion/react'
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
-import { useTelemetry } from '@/context/TelemetryContext'
+import { useTelemetrySelector } from '@/hooks/useTelemetrySelector'
 import { useAppPhase } from '@/hooks/useAppPhase'
 import { useLogStatusText } from '@/hooks/useLogStatusText'
 import { TelemetryPanel } from '@/components/telemetry/TelemetryPanel'
@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button'
 import { Tooltip } from '@/components/ui/tooltip'
 
 const App: FC = () => {
-  const { connectionStatus } = useTelemetry()
+  const connectionStatus = useTelemetrySelector((s) => s.connectionStatus)
   const { phase, beginTransition, onTransitionComplete } =
     useAppPhase(connectionStatus)
   const isViewExpanded = phase === 'transitioning' || phase === 'active'
@@ -34,17 +34,13 @@ const App: FC = () => {
               <GlassCard className="p-1">
                 <Tooltip
                   content={
-                    telemetryVisible
-                      ? 'Hide telemetry'
-                      : 'Show telemetry'
+                    telemetryVisible ? 'Hide telemetry' : 'Show telemetry'
                   }
                   side="right"
                 >
                   <Button
                     size="icon"
-                    onClick={() =>
-                      setTelemetryVisible((v) => !v)
-                    }
+                    onClick={() => setTelemetryVisible((v) => !v)}
                   >
                     {telemetryVisible ? (
                       <PanelLeftClose size={18} />

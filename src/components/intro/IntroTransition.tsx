@@ -7,7 +7,7 @@ import {
 } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import type { AppPhase } from '@/hooks/useAppPhase'
-import { useTelemetry } from '@/context/TelemetryContext'
+import { useTelemetrySelector } from '@/hooks/useTelemetrySelector'
 import { IntroCard } from './IntroCard'
 import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect'
 import { Perspective3DContainer } from '@/components/ui/Perspective3DContainer'
@@ -34,8 +34,7 @@ export const IntroTransition: FC<IntroTransitionProps> = ({
   content,
   children,
 }) => {
-  const { telemetry } = useTelemetry()
-  const contentMounted = !!telemetry
+  const contentMounted = useTelemetrySelector((s) => s.telemetry !== null)
   const containerRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
   const [cardClip, setCardClip] = useState(CLIP_DEFAULT)
