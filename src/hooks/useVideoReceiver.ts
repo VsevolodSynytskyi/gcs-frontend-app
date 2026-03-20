@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Peer from 'peerjs'
 
 // initializing — PeerJS is setting up, not ready yet
@@ -38,7 +38,7 @@ export const useVideoReceiver: () => {
   // call the remote peer, and listen for the incoming stream.
   // Once the remote stream arrives, save it and stop the local stream
   // since we only needed it to initiate the connection.
-  const connect = async (remotePeerId: string) => {
+  const connect = useCallback(async (remotePeerId: string) => {
     if (!peerRef.current) return
 
     setStatus('connecting')
@@ -54,14 +54,16 @@ export const useVideoReceiver: () => {
       setStatus('streaming')
       localStream.getTracks().forEach((track) => track.stop())
     })
-  }
+  }, [])
 
   // Stop all tracks on the remote stream, clear it, and reset to ready.
-  const disconnect = () => {
-    remoteStream?.getTracks().forEach((track) => track.stop())
-    setRemoteStream(null)
+  const disconnect = useCallback(() => {
+    setRemoteStream((prev) => {
+      prev?.getTracks().forEach((track) => track.stop())
+      return null
+    })
     setStatus('ready')
-  }
+  }, [])
 
   return { status, remoteStream, connect, disconnect }
 }
