@@ -1,7 +1,7 @@
-import { useEffect } from 'react'
+import { type FC, useEffect } from 'react'
 import { useMap } from 'react-leaflet'
 
-export function MapResizeObserver() {
+export const MapResizeObserver: FC = () => {
   const map = useMap()
   useEffect(() => {
     const container = map.getContainer()

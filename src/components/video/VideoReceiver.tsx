@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { type FC, useEffect, useRef, useState } from 'react'
 import Peer from 'peerjs'
 
-export function VideoReceiver() {
+export const VideoReceiver: FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [remotePeerId, setRemotePeerId] = useState('')
   const [status, setStatus] = useState('Ready')

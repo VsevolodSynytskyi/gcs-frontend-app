@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { FC, ReactNode } from 'react'
 import { motion } from 'motion/react'
 import { usePerspectiveTilt } from '@/hooks/usePerspectiveTilt'
 import { cn } from '@/lib/utils'
@@ -14,11 +14,11 @@ interface Perspective3DContainerProps {
   disabled?: boolean
 }
 
-export function Perspective3DContainer({
+export const Perspective3DContainer: FC<Perspective3DContainerProps> = ({
   children,
   className,
   disabled = false,
-}: Perspective3DContainerProps) {
+}) => {
   const { containerRef, springRotateX, springRotateY, handlers } =
     usePerspectiveTilt({
       maxTilt: MAX_TILT,

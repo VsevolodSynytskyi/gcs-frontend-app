@@ -1,3 +1,4 @@
+import type { FC } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -9,7 +10,7 @@ interface IntroCardProps {
   onBegin: () => void
 }
 
-export function IntroCard({ phase, onBegin }: IntroCardProps) {
+export const IntroCard: FC<IntroCardProps> = ({ phase, onBegin }) => {
   const connected = phase === 'ready'
 
   return (

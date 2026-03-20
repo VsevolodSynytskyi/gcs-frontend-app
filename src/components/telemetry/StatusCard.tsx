@@ -1,3 +1,4 @@
+import type { FC } from 'react'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { GlassCard } from '@/components/ui/GlassCard'
@@ -8,7 +9,7 @@ import {
   resolveDroneStatus,
 } from '@/components/telemetry/DroneStatusBadge'
 
-export function StatusCard() {
+export const StatusCard: FC = () => {
   const { telemetry, connectionStatus } = useTelemetry()
 
   const droneStatus = resolveDroneStatus({

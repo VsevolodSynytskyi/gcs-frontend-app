@@ -1,3 +1,4 @@
+import type { FC } from 'react'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { StatItem } from '@/components/ui/StatItem'
 import { NoData } from '@/components/ui/NoData'
@@ -7,7 +8,7 @@ interface PositionCardProps {
   lon?: number
 }
 
-export function PositionCard({ lat, lon }: PositionCardProps) {
+export const PositionCard: FC<PositionCardProps> = ({ lat, lon }) => {
   const latText = lat != null ? lat.toFixed(7) : <NoData />
   const lonText = lon != null ? lon.toFixed(7) : <NoData />
 

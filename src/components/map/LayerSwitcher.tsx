@@ -1,10 +1,11 @@
+import type { FC } from 'react'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { useAppearance } from '@/context/AppearanceContext'
 
 export type MapLayer = 'Dark' | 'Street' | 'Satellite'
 
-export function LayerSwitcher() {
+export const LayerSwitcher: FC = () => {
   const { mapLayer, setMapLayer } = useAppearance()
 
   return (

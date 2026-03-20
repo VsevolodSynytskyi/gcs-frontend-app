@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { type FC, useCallback } from 'react'
 import type { Map } from 'leaflet'
 import { Crosshair, Minus, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -11,7 +11,7 @@ interface MapControlsProps {
   position: [number, number]
 }
 
-export function MapControls({ map, position }: MapControlsProps) {
+export const MapControls: FC<MapControlsProps> = ({ map, position }) => {
   const { connectionStatus } = useTelemetry()
   const connected = connectionStatus === 'connected'
   const handleRecenter = useCallback(() => {

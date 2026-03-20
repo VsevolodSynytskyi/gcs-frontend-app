@@ -1,3 +1,4 @@
+import type { FC } from 'react'
 import { Separator } from '@/components/ui/separator'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { StatItem } from '@/components/ui/StatItem'
@@ -11,12 +12,12 @@ interface NavigationCardProps {
   verticalSpeed?: number
 }
 
-export function NavigationCard({
+export const NavigationCard: FC<NavigationCardProps> = ({
   heading,
   groundSpeed,
   altitude,
   verticalSpeed,
-}: NavigationCardProps) {
+}) => {
   const altitudeText =
     altitude != null ? `${altitude.toFixed(1)} m` : <NoData />
   const verticalSpeedText =

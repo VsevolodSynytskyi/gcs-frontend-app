@@ -1,3 +1,4 @@
+import type { FC } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Badge, type badgeVariants } from '@/components/ui/badge'
 import type { VariantProps } from 'class-variance-authority'
@@ -90,17 +91,17 @@ const SYSTEM_STATUS_MAP: Record<SystemStatus, DroneStatus> = {
   MAV_STATE_POWEROFF: 'poweroff',
 }
 
-export function resolveDroneStatus({
-  connectionStatus,
-  systemStatus,
-  sensorsHealthy,
-  armed,
-}: {
+export const resolveDroneStatus: (args: {
   connectionStatus: ConnectionStatus
   systemStatus?: SystemStatus
   sensorsHealthy: boolean
   armed?: boolean
-}): DroneStatus {
+}) => DroneStatus = ({
+  connectionStatus,
+  systemStatus,
+  sensorsHealthy,
+  armed,
+}) => {
   if (connectionStatus === 'disconnected') return 'disconnected'
   if (connectionStatus === 'reconnecting') return 'connecting'
 
@@ -115,7 +116,9 @@ export function resolveDroneStatus({
   return mapped
 }
 
-export function DroneStatusBadge({ status }: { status: DroneStatus }) {
+export const DroneStatusBadge: FC<{ status: DroneStatus }> = ({
+  status,
+}) => {
   const { variant, label, pulsing } = STATUS_CONFIG[status]
 
   return (

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { type FC, useCallback, useState } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { Marker, useMapEvents } from 'react-leaflet'
 import type { LatLng, LeafletMouseEvent } from 'leaflet'
@@ -19,7 +19,7 @@ const locateIcon = L.divIcon({
   iconAnchor: [ICON_SIZE / 2, ICON_SIZE / 2],
 })
 
-export function MapContextMenu() {
+export const MapContextMenu: FC = () => {
   const { telemetry, connectionStatus } = useTelemetry()
   const [click, setClick] = useState<{
     latlng: LatLng

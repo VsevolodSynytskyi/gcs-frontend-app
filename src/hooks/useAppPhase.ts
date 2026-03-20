@@ -3,7 +3,11 @@ import type { ConnectionStatus } from './useTelemetry'
 
 export type AppPhase = 'idle' | 'ready' | 'transitioning' | 'active'
 
-export function useAppPhase(connectionStatus: ConnectionStatus) {
+export const useAppPhase: (connectionStatus: ConnectionStatus) => {
+  phase: AppPhase
+  beginTransition: () => void
+  onTransitionComplete: () => void
+} = (connectionStatus) => {
   const [phase, setPhase] = useState<AppPhase>('idle')
 
   useEffect(() => {

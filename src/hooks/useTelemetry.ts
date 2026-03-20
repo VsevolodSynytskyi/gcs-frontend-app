@@ -11,7 +11,10 @@ export type { ConnectionStatus, SystemStatus, Telemetry } from '@/api/telemetry'
 const POLL_INTERVAL = 100
 const RECONNECT_THRESHOLD = 5
 
-export function useTelemetry() {
+export const useTelemetry: () => {
+  telemetry: Telemetry | null
+  connectionStatus: ConnectionStatus
+} = () => {
   const [telemetry, setTelemetry] = useState<Telemetry | null>(null)
   const [connectionStatus, setConnectionStatus] =
     useState<ConnectionStatus>('disconnected')

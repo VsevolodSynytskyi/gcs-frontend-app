@@ -1,3 +1,4 @@
+import type { FC } from 'react'
 import { motion } from 'motion/react'
 import { useTelemetry } from '@/context/TelemetryContext'
 import { StatusCard } from './StatusCard'
@@ -6,7 +7,7 @@ import { NavigationCard } from './NavigationCard'
 import { PositionCard } from './PositionCard'
 import { Perspective3DContainer } from '@/components/ui/Perspective3DContainer'
 
-export function TelemetryPanel() {
+export const TelemetryPanel: FC = () => {
   const { telemetry } = useTelemetry()
 
   return (

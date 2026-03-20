@@ -1,6 +1,7 @@
+import type { FC } from 'react'
 import { useMapScale } from '@/hooks/useMapScale'
 
-export function MapScale() {
+export const MapScale: FC = () => {
   const { label, widthPx } = useMapScale()
 
   return (

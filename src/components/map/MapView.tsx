@@ -1,3 +1,4 @@
+import type { FC } from 'react'
 import { MapContainer, TileLayer } from 'react-leaflet'
 import type { Map } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -14,7 +15,7 @@ interface MapViewProps {
   onMapReady?: (map: Map) => void
 }
 
-export function MapView({ onMapReady }: MapViewProps) {
+export const MapView: FC<MapViewProps> = ({ onMapReady }) => {
   const { telemetry } = useTelemetry()
   const { mapLayer } = useAppearance()
   const position = useLastPosition(telemetry)

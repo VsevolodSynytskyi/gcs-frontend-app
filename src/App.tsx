@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { type FC, useState } from 'react'
 import { useTelemetry } from '@/context/TelemetryContext'
 import { useAppPhase } from '@/hooks/useAppPhase'
 import { useLogStatusText } from '@/hooks/useLogStatusText'
@@ -11,7 +11,7 @@ import { Toaster } from '@/components/ui/Toaster'
 import { MainView } from '@/components/MainView.tsx'
 import type { Map } from 'leaflet'
 
-function App() {
+const App: FC = () => {
   const { connectionStatus, telemetry } = useTelemetry()
   const { phase, beginTransition, onTransitionComplete } =
     useAppPhase(connectionStatus)

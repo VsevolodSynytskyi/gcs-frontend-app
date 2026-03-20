@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { FC, ReactNode } from 'react'
 import { X } from 'lucide-react'
 import { Popover, PopoverAnchor, PopoverContent } from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
@@ -18,7 +18,13 @@ interface MapPopoverProps {
   onClose: () => void
 }
 
-export function MapPopover({ open, x, y, items, onClose }: MapPopoverProps) {
+export const MapPopover: FC<MapPopoverProps> = ({
+  open,
+  x,
+  y,
+  items,
+  onClose,
+}) => {
   return (
     <Popover
       key={`${x}-${y}`}

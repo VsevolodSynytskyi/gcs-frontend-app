@@ -33,14 +33,17 @@ const ACK_RESULTS: Record<number, string> = {
   6: 'CANCELLED',
 }
 
-function severityVariant(severity: number): ToastVariant {
+const severityVariant: (severity: number) => ToastVariant = (severity) => {
   if (severity <= 3) return 'error'
   if (severity === 4) return 'warning'
   if (severity === 6) return 'info'
   return 'default'
 }
 
-function logStatusText(severity: number, text: string) {
+const logStatusText: (severity: number, text: string) => void = (
+  severity,
+  text,
+) => {
   const label = SEVERITY_LABELS[severity] ?? 'UNKNOWN'
   const formatted = `[${label}] ${text}`
 
@@ -66,7 +69,7 @@ const KNOWN_COMMAND_TYPES = new Set(
   Object.values(COMMAND_NAMES).map((n) => `MAV_CMD_${n}`),
 )
 
-function logCommandAck(msg: Record<string, unknown>): boolean {
+const logCommandAck: (msg: Record<string, unknown>) => boolean = (msg) => {
   const cmdId = (msg.command as { type: string })?.type ?? msg.command
 
   // Only show ACKs for commands our app sends
@@ -107,7 +110,7 @@ function logCommandAck(msg: Record<string, unknown>): boolean {
   return true
 }
 
-function parseSeverity(raw: unknown): number {
+const parseSeverity: (raw: unknown) => number = (raw) => {
   if (typeof raw === 'number') return raw
 
   if (typeof raw === 'object' && raw !== null && 'type' in raw) {
@@ -126,7 +129,7 @@ function parseSeverity(raw: unknown): number {
 
 const DEDUP_WINDOW_MS = 500
 
-export function useLogStatusText(enabled: boolean) {
+export const useLogStatusText: (enabled: boolean) => void = (enabled) => {
   const wsRef = useRef<WebSocket | null>(null)
   const reconnectTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
   const reconnectAttempt = useRef(0)
@@ -142,7 +145,7 @@ export function useLogStatusText(enabled: boolean) {
 
     let disposed = false
 
-    function isDuplicate(key: string): boolean {
+    const isDuplicate: (key: string) => boolean = (key) => {
       const now = Date.now()
       const last = recentMessages.current.get(key)
       if (last && now - last < DEDUP_WINDOW_MS) return true
@@ -150,7 +153,7 @@ export function useLogStatusText(enabled: boolean) {
       return false
     }
 
-    function connect() {
+    const connect: () => void = () => {
       if (disposed) return
       const ws = new WebSocket(WS_URL)
       wsRef.current = ws
@@ -193,7 +196,7 @@ export function useLogStatusText(enabled: boolean) {
       }
     }
 
-    function scheduleReconnect() {
+    const scheduleReconnect: () => void = () => {
       const delay = Math.min(
         1000 * 2 ** reconnectAttempt.current,
         MAX_RECONNECT_DELAY,

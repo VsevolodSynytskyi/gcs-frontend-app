@@ -1,4 +1,10 @@
-import { type ReactNode, useLayoutEffect, useRef, useState } from 'react'
+import {
+  type FC,
+  type ReactNode,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import type { AppPhase } from '@/hooks/useAppPhase'
 import { useTelemetry } from '@/context/TelemetryContext'
@@ -21,13 +27,13 @@ interface IntroTransitionProps {
   children?: ReactNode
 }
 
-export function IntroTransition({
+export const IntroTransition: FC<IntroTransitionProps> = ({
   phase,
   onBegin,
   onTransitionComplete,
   content,
   children,
-}: IntroTransitionProps) {
+}) => {
   const { telemetry } = useTelemetry()
   const contentMounted = !!telemetry
   const containerRef = useRef<HTMLDivElement>(null)

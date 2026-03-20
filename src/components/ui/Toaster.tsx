@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from 'react'
+import { type FC, useSyncExternalStore } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { CircleAlert, Info, TriangleAlert } from 'lucide-react'
 
@@ -28,11 +28,14 @@ let toasts: Toast[] = []
 let nextId = 0
 const listeners = new Set<() => void>()
 
-function emit() {
+const emit: () => void = () => {
   listeners.forEach((l) => l())
 }
 
-export function addToast(message: string, variant: ToastVariant = 'default') {
+export const addToast: (
+  message: string,
+  variant?: ToastVariant,
+) => void = (message, variant = 'default') => {
   const id = nextId++
   toasts = [...toasts, { id, message, variant }]
   emit()
@@ -41,23 +44,21 @@ export function addToast(message: string, variant: ToastVariant = 'default') {
   }, 4000)
 }
 
-function removeToast(id: number) {
+const removeToast: (id: number) => void = (id) => {
   toasts = toasts.filter((t) => t.id !== id)
   emit()
 }
 
-function subscribe(listener: () => void) {
+const subscribe: (listener: () => void) => () => void = (listener) => {
   listeners.add(listener)
   return () => {
     listeners.delete(listener)
   }
 }
 
-function getSnapshot() {
-  return toasts
-}
+const getSnapshot: () => Toast[] = () => toasts
 
-export function Toaster() {
+export const Toaster: FC = () => {
   const items = useSyncExternalStore(subscribe, getSnapshot)
 
   return (
