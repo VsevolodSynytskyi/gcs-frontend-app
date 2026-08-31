@@ -3,6 +3,7 @@ import {
   useContext,
   useEffect,
   useState,
+  type FC,
   type ReactNode,
 } from 'react'
 import type { MapLayer } from '@/components/map/LayerSwitcher'
@@ -17,7 +18,7 @@ interface AppearanceContextValue {
 
 const AppearanceContext = createContext<AppearanceContextValue | null>(null)
 
-function getAppearance(layer: MapLayer): Appearance {
+const getAppearance: (layer: MapLayer) => Appearance = (layer) => {
   switch (layer) {
     case 'Street':
       return 'light'
@@ -27,7 +28,9 @@ function getAppearance(layer: MapLayer): Appearance {
   }
 }
 
-export function AppearanceProvider({ children }: { children: ReactNode }) {
+export const AppearanceProvider: FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [mapLayer, setMapLayer] = useState<MapLayer>('Dark')
   const appearance = getAppearance(mapLayer)
 
@@ -49,7 +52,7 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
   )
 }
 
-export function useAppearance(): AppearanceContextValue {
+export const useAppearance: () => AppearanceContextValue = () => {
   const ctx = useContext(AppearanceContext)
   if (!ctx)
     throw new Error('useAppearance must be used within AppearanceProvider')

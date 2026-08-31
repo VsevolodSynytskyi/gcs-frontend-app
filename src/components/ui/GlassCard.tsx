@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { FC, ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
 interface GlassCardProps {
@@ -6,7 +6,7 @@ interface GlassCardProps {
   className?: string
 }
 
-export function GlassCard({ children, className }: GlassCardProps) {
+export const GlassCard: FC<GlassCardProps> = ({ children, className }) => {
   return (
     <div
       className={cn(

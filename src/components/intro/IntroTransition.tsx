@@ -1,7 +1,13 @@
-import { type ReactNode, useEffect, useRef, useState } from 'react'
+import {
+  type FC,
+  type ReactNode,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import type { AppPhase } from '@/hooks/useAppPhase'
-import { useTelemetry } from '@/context/TelemetryContext'
+import { useTelemetrySelector } from '@/hooks/useTelemetrySelector'
 import { IntroCard } from './IntroCard'
 import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect'
 import { Perspective3DContainer } from '@/components/ui/Perspective3DContainer'
@@ -17,50 +23,53 @@ interface IntroTransitionProps {
   phase: AppPhase
   onBegin: () => void
   onTransitionComplete: () => void
-  map: ReactNode
+  content: ReactNode
   children?: ReactNode
 }
 
-export function IntroTransition({
+export const IntroTransition: FC<IntroTransitionProps> = ({
   phase,
   onBegin,
   onTransitionComplete,
-  map,
+  content,
   children,
-}: IntroTransitionProps) {
-  const { telemetry } = useTelemetry()
-  const mapMounted = useRef(false)
-  if (telemetry) mapMounted.current = true
+}) => {
+  const contentMounted = useTelemetrySelector((s) => s.telemetry !== null)
   const containerRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
   const [cardClip, setCardClip] = useState(CLIP_DEFAULT)
-  const [showOverlay, setShowOverlay] = useState(true)
 
   const isCard = phase === 'idle' || phase === 'ready'
   const isExpanded = phase === 'transitioning' || phase === 'active'
   const showRipple = phase !== 'active'
 
-  useEffect(() => {
-    if (isCard) setShowOverlay(true)
-  }, [isCard])
+  useLayoutEffect(() => {
+    if (!isCard || !containerRef.current || !cardRef.current) return
 
-  useEffect(() => {
-    if (isCard && containerRef.current && cardRef.current) {
-      const c = containerRef.current.getBoundingClientRect()
-      const card = cardRef.current.getBoundingClientRect()
-      const top = card.top - c.top
-      const right = c.right - card.right
-      const bottom = c.bottom - card.bottom
-      const left = card.left - c.left
-      setCardClip(`inset(${top}px ${right}px ${bottom}px ${left}px round 12px)`)
+    const container = containerRef.current
+    const card = cardRef.current
+
+    const updateCardClip = () => {
+      const c = container.getBoundingClientRect()
+      const r = card.getBoundingClientRect()
+      setCardClip(
+        `inset(${r.top - c.top}px ${c.right - r.right}px ${c.bottom - r.bottom}px ${r.left - c.left}px round 12px)`,
+      )
     }
-  })
+
+    updateCardClip()
+
+    const observer = new ResizeObserver(updateCardClip)
+    observer.observe(container)
+
+    return () => observer.disconnect()
+  }, [isCard])
 
   return (
     <div ref={containerRef} className="relative size-full">
-      {mapMounted.current && (
+      {contentMounted && (
         <motion.div
-          className={`absolute inset-0 z-4 overflow-hidden rounded-lg border border-white/10 ${isCard ? 'invisible' : 'visible'}`}
+          className={`absolute inset-0 z-4 overflow-hidden rounded-lg bg-(--color-background) ${isCard ? 'invisible' : 'visible'}`}
           initial={false}
           animate={{
             clipPath: isExpanded ? CLIP_EXPANDED : cardClip,
@@ -70,18 +79,15 @@ export function IntroTransition({
             if (phase === 'transitioning') onTransitionComplete()
           }}
         >
-          {map}
+          {content}
           <AnimatePresence>
-            {showOverlay && (
+            {isCard && (
               <motion.div
-                className="absolute inset-0 z-[1001] rounded-lg bg-(--color-background)"
+                className="absolute inset-0 z-1001 rounded-lg bg-(--color-background)"
                 initial={{ opacity: 1 }}
-                animate={{ opacity: isExpanded ? 0 : 1 }}
+                animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={EXPAND_TRANSITION}
-                onAnimationComplete={() => {
-                  if (isExpanded) setShowOverlay(false)
-                }}
               />
             )}
           </AnimatePresence>

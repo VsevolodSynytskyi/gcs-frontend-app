@@ -8,18 +8,17 @@ interface MapScale {
 
 const MAX_WIDTH_PX = 100
 
-function getRoundNum(num: number): number {
+const getRoundNum: (num: number) => number = (num) => {
   const pow10 = Math.pow(10, (Math.floor(num) + '').length - 1)
   const d = num / pow10
   const rounded = d >= 10 ? 10 : d >= 5 ? 5 : d >= 3 ? 3 : d >= 2 ? 2 : 1
   return pow10 * rounded
 }
 
-function formatMetric(meters: number): string {
-  return meters < 1000 ? `${meters} m` : `${meters / 1000} km`
-}
+const formatMetric: (meters: number) => string = (meters) =>
+  meters < 1000 ? `${meters} m` : `${meters / 1000} km`
 
-function computeScale(map: L.Map): MapScale {
+const computeScale: (map: L.Map) => MapScale = (map) => {
   const y = map.getSize().y / 2
   const maxMeters = map.distance(
     map.containerPointToLatLng([0, y]),
@@ -33,7 +32,7 @@ function computeScale(map: L.Map): MapScale {
   }
 }
 
-export function useMapScale(): MapScale {
+export const useMapScale: () => MapScale = () => {
   const map = useMap()
   const [scale, setScale] = useState<MapScale>(() => computeScale(map))
 

@@ -26,11 +26,11 @@ docker compose up --build
 
 This starts three services:
 
-| Service | Description | URL |
-| --- | --- | --- |
-| **gcs** | Frontend (Vite dev server) | http://localhost:5173 |
-| **mavlink2rest** | MAVLink REST API | http://localhost:8088 |
-| **sitl** | ArduPilot SITL simulator | — |
+| Service          | Description                | URL                   |
+| ---------------- | -------------------------- | --------------------- |
+| **gcs**          | Frontend (Vite dev server) | http://localhost:5173 |
+| **mavlink2rest** | MAVLink REST API           | http://localhost:8088 |
+| **sitl**         | ArduPilot SITL simulator   | —                     |
 
 Open http://localhost:5173 in your browser. It may take 30–60 seconds for the simulator to initialize.
 

@@ -1,9 +1,13 @@
 import { useState, useEffect, useCallback } from 'react'
-import type { ConnectionStatus } from './useTelemetry'
+import type { ConnectionStatus } from '@/api/telemetry'
 
 export type AppPhase = 'idle' | 'ready' | 'transitioning' | 'active'
 
-export function useAppPhase(connectionStatus: ConnectionStatus) {
+export const useAppPhase: (connectionStatus: ConnectionStatus) => {
+  phase: AppPhase
+  beginTransition: () => void
+  onTransitionComplete: () => void
+} = (connectionStatus) => {
   const [phase, setPhase] = useState<AppPhase>('idle')
 
   useEffect(() => {

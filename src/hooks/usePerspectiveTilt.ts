@@ -19,12 +19,14 @@ interface UsePerspectiveTiltReturn {
   }
 }
 
-export function usePerspectiveTilt({
+export const usePerspectiveTilt: (
+  options?: UsePerspectiveTiltOptions,
+) => UsePerspectiveTiltReturn = ({
   maxTilt = 12,
   stiffness = 100,
   damping = 20,
   disabled = false,
-}: UsePerspectiveTiltOptions = {}): UsePerspectiveTiltReturn {
+} = {}) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const isHoveredRef = useRef(false)
   const [isHovered, setIsHovered] = useState(false)

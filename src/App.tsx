@@ -1,24 +1,24 @@
-import { useState } from 'react'
-import type { Map } from 'leaflet'
-import { useTelemetry } from '@/context/TelemetryContext'
+import { type FC, useState } from 'react'
+import { AnimatePresence } from 'motion/react'
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
+import { useTelemetrySelector } from '@/hooks/useTelemetrySelector'
 import { useAppPhase } from '@/hooks/useAppPhase'
 import { useLogStatusText } from '@/hooks/useLogStatusText'
-import { useLastPosition } from '@/hooks/useLastPosition'
-import { MapView } from '@/components/map/MapView'
-import { MapControls } from '@/components/map/MapControls'
-import { LayerSwitcher } from '@/components/map/LayerSwitcher'
 import { TelemetryPanel } from '@/components/telemetry/TelemetryPanel'
 import { IntroTransition } from '@/components/intro/IntroTransition'
 import { Toaster } from '@/components/ui/Toaster'
+import { MainView } from '@/components/MainView.tsx'
+import { GlassCard } from '@/components/ui/GlassCard'
+import { Button } from '@/components/ui/button'
+import { Tooltip } from '@/components/ui/tooltip'
 
-function App() {
-  const { connectionStatus, telemetry } = useTelemetry()
+const App: FC = () => {
+  const connectionStatus = useTelemetrySelector((s) => s.connectionStatus)
   const { phase, beginTransition, onTransitionComplete } =
     useAppPhase(connectionStatus)
   const isViewExpanded = phase === 'transitioning' || phase === 'active'
+  const [telemetryVisible, setTelemetryVisible] = useState(true)
   useLogStatusText(connectionStatus === 'connected')
-  const [map, setMap] = useState<Map | null>(null)
-  const position = useLastPosition(telemetry)
 
   return (
     <div className="h-screen w-screen bg-(--color-background) p-1">
@@ -26,19 +26,34 @@ function App() {
         phase={phase}
         onBegin={beginTransition}
         onTransitionComplete={onTransitionComplete}
-        map={<MapView onMapReady={setMap} />}
+        content={<MainView />}
       >
         {isViewExpanded && (
           <>
-            <LayerSwitcher />
-            {map && (
-              <div className="pointer-events-none absolute inset-y-0 right-3 z-1000 flex items-center">
-                <div className={`pointer-events-auto`}>
-                  <MapControls map={map} position={position} />
-                </div>
-              </div>
-            )}
-            <TelemetryPanel />
+            <div className="absolute top-4 left-4 z-1000">
+              <GlassCard className="p-1">
+                <Tooltip
+                  content={
+                    telemetryVisible ? 'Hide telemetry' : 'Show telemetry'
+                  }
+                  side="right"
+                >
+                  <Button
+                    size="icon"
+                    onClick={() => setTelemetryVisible((v) => !v)}
+                  >
+                    {telemetryVisible ? (
+                      <PanelLeftClose size={18} />
+                    ) : (
+                      <PanelLeftOpen size={18} />
+                    )}
+                  </Button>
+                </Tooltip>
+              </GlassCard>
+            </div>
+            <AnimatePresence>
+              {telemetryVisible && <TelemetryPanel />}
+            </AnimatePresence>
           </>
         )}
       </IntroTransition>

@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react'
+import { type FC, useLayoutEffect, useRef } from 'react'
 import { useMotionValue, useSpring } from 'motion/react'
 import { NoData } from '@/components/ui/NoData.tsx'
 
@@ -22,7 +22,7 @@ const ARROW_R = 45
 const ARROW_SPREAD = 2
 const LABEL_R = 75
 
-export function Compass({ heading, groundSpeed }: CompassProps) {
+export const Compass: FC<CompassProps> = ({ heading, groundSpeed }) => {
   const unwrapped = useRef(heading ?? 0)
   const motionHeading = useMotionValue(unwrapped.current)
   const springHeading = useSpring(motionHeading, { stiffness: 80, damping: 20 })

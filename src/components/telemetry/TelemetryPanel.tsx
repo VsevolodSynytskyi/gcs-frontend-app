@@ -1,19 +1,17 @@
+import type { FC } from 'react'
 import { motion } from 'motion/react'
-import { useTelemetry } from '@/context/TelemetryContext'
 import { StatusCard } from './StatusCard'
 import { BatteryCard } from './BatteryCard'
 import { NavigationCard } from './NavigationCard'
 import { PositionCard } from './PositionCard'
 import { Perspective3DContainer } from '@/components/ui/Perspective3DContainer'
 
-export function TelemetryPanel() {
-  const { telemetry } = useTelemetry()
-
+export const TelemetryPanel: FC = () => {
   return (
     <motion.div
-      initial={{ x: 40 }}
+      initial={{ x: '-110%' }}
       animate={{ x: 0 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
+      exit={{ x: '-110%' }}
       className="absolute top-1/2 left-4 z-1000 w-72 -translate-y-1/2"
     >
       <Perspective3DContainer>
@@ -31,7 +29,7 @@ export function TelemetryPanel() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.05 }}
           >
-            <BatteryCard percentage={telemetry?.battery} />
+            <BatteryCard />
           </motion.div>
 
           <motion.div
@@ -39,12 +37,7 @@ export function TelemetryPanel() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
           >
-            <NavigationCard
-              heading={telemetry?.heading}
-              groundSpeed={telemetry?.groundSpeed}
-              altitude={telemetry?.position.alt}
-              verticalSpeed={telemetry?.verticalSpeed}
-            />
+            <NavigationCard />
           </motion.div>
 
           <motion.div
@@ -52,10 +45,7 @@ export function TelemetryPanel() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.15 }}
           >
-            <PositionCard
-              lat={telemetry?.position.lat}
-              lon={telemetry?.position.lon}
-            />
+            <PositionCard />
           </motion.div>
         </div>
       </Perspective3DContainer>

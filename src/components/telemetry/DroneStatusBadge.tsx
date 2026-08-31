@@ -1,11 +1,12 @@
+import type { FC } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Badge, type badgeVariants } from '@/components/ui/badge'
 import type { VariantProps } from 'class-variance-authority'
-import type { ConnectionStatus, SystemStatus } from '@/hooks/useTelemetry'
+import type { ConnectionStatus, SystemStatus } from '@/api/telemetry'
 
 type BadgeVariant = NonNullable<VariantProps<typeof badgeVariants>['variant']>
 
-export type DroneStatus =
+type DroneStatus =
   | 'disconnected'
   | 'connecting'
   | 'initializing'
@@ -17,6 +18,13 @@ export type DroneStatus =
   | 'critical'
   | 'emergency'
   | 'poweroff'
+
+type DroneStatusBadgeProps = {
+  connectionStatus: ConnectionStatus
+  systemStatus?: SystemStatus
+  sensorsHealthy?: boolean
+  armed?: boolean
+}
 
 const STATUS_CONFIG: Record<
   DroneStatus,
@@ -90,21 +98,20 @@ const SYSTEM_STATUS_MAP: Record<SystemStatus, DroneStatus> = {
   MAV_STATE_POWEROFF: 'poweroff',
 }
 
-export function resolveDroneStatus({
+const resolveDroneStatus: (
+  args: DroneStatusBadgeProps,
+) => DroneStatus | null = ({
   connectionStatus,
   systemStatus,
   sensorsHealthy,
   armed,
-}: {
-  connectionStatus: ConnectionStatus
-  systemStatus?: SystemStatus
-  sensorsHealthy: boolean
-  armed?: boolean
-}): DroneStatus {
-  if (connectionStatus === 'disconnected') return 'disconnected'
-  if (connectionStatus === 'reconnecting') return 'connecting'
+}) => {
+  if (!systemStatus) {
+    if (connectionStatus === 'reconnecting') return 'connecting'
+    return null
+  }
 
-  if (!systemStatus) return 'connecting'
+  if (connectionStatus === 'disconnected') return 'disconnected'
 
   if (armed) return 'armed'
 
@@ -115,7 +122,16 @@ export function resolveDroneStatus({
   return mapped
 }
 
-export function DroneStatusBadge({ status }: { status: DroneStatus }) {
+export const DroneStatusBadge: FC<DroneStatusBadgeProps> = (props) => {
+  const status = resolveDroneStatus(props)
+
+  if (!status)
+    return (
+      <Badge variant="secondary" className="invisible">
+        Loading
+      </Badge>
+    )
+
   const { variant, label, pulsing } = STATUS_CONFIG[status]
 
   return (

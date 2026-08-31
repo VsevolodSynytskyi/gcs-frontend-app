@@ -1,13 +1,13 @@
+import type { FC } from 'react'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { StatItem } from '@/components/ui/StatItem'
 import { NoData } from '@/components/ui/NoData'
+import { useTelemetrySelector } from '@/hooks/useTelemetrySelector'
 
-interface PositionCardProps {
-  lat?: number
-  lon?: number
-}
+export const PositionCard: FC = () => {
+  const lat = useTelemetrySelector((s) => s.telemetry?.position.lat)
+  const lon = useTelemetrySelector((s) => s.telemetry?.position.lon)
 
-export function PositionCard({ lat, lon }: PositionCardProps) {
   const latText = lat != null ? lat.toFixed(7) : <NoData />
   const lonText = lon != null ? lon.toFixed(7) : <NoData />
 

@@ -1,25 +1,25 @@
+import type { FC } from 'react'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { GlassCard } from '@/components/ui/GlassCard'
-import { useTelemetry } from '@/hooks/useTelemetry'
+import { useTelemetrySelector } from '@/hooks/useTelemetrySelector'
 import { armAndTakeoff, land } from '@/api/droneControl'
-import {
-  DroneStatusBadge,
-  resolveDroneStatus,
-} from '@/components/telemetry/DroneStatusBadge'
+import { DroneStatusBadge } from '@/components/telemetry/DroneStatusBadge'
 
-export function StatusCard() {
-  const { telemetry, connectionStatus } = useTelemetry()
+export const StatusCard: FC = () => {
+  const connectionStatus = useTelemetrySelector((s) => s.connectionStatus)
+  const systemStatus = useTelemetrySelector((s) => s.telemetry?.systemStatus)
+  const sensorsHealthy = useTelemetrySelector(
+    (s) => s.telemetry?.sensorsHealthy,
+  )
+  const armed = useTelemetrySelector((s) => s.telemetry?.armed)
 
-  const droneStatus = resolveDroneStatus({
-    connectionStatus,
-    systemStatus: telemetry?.systemStatus,
-    sensorsHealthy: telemetry?.sensorsHealthy ?? false,
-    armed: telemetry?.armed,
-  })
-
-  const canTakeOff = droneStatus === 'ready'
-  const canLand = droneStatus === 'armed'
+  const canTakeOff =
+    connectionStatus === 'connected' &&
+    systemStatus === 'MAV_STATE_STANDBY' &&
+    sensorsHealthy &&
+    !armed
+  const canLand = armed === true
 
   const onTakeOffClick = async () => {
     try {
@@ -36,11 +36,18 @@ export function StatusCard() {
     }
   }
 
+  console.log(`StatusCard`)
+
   return (
     <GlassCard>
       <div className="flex flex-col gap-3">
         <div>
-          <DroneStatusBadge status={droneStatus} />
+          <DroneStatusBadge
+            connectionStatus={connectionStatus}
+            systemStatus={systemStatus}
+            sensorsHealthy={sensorsHealthy}
+            armed={armed}
+          />
         </div>
 
         <Separator />

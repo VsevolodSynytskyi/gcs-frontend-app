@@ -35,6 +35,9 @@ GCS (Ground Control Station) frontend — a web app for real-time UAV/drone tele
 ### Code Style
 
 - Functional components only, no class components.
+- **Arrow functions with types** — type annotation goes on the variable, not on the arrow. No `function` keyword declarations.
+  - Functions: `const fn: (params) => ReturnType = (params) => {}`
+  - React components: `const Component: FC<Props> = (props) => {}`
 - Use named exports for components (except the main App which uses default export).
 - TypeScript strict mode is enabled.
 - Prefer `switch` statements over ternaries/`if` chains for multi-branch conditionals (readability).

@@ -46,7 +46,7 @@ const EKF_PRED_POS_HORIZ_ABS = 256
 const REQUIRED_EKF_BITS =
   EKF_ATTITUDE | EKF_VELOCITY_HORIZ | EKF_POS_HORIZ_ABS | EKF_PRED_POS_HORIZ_ABS
 
-export async function requestDataStreams(): Promise<void> {
+export const requestDataStreams: () => Promise<void> = async () => {
   await fetch(MAVLINK_BASE, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -64,7 +64,7 @@ export async function requestDataStreams(): Promise<void> {
   })
 }
 
-export async function fetchTelemetry(): Promise<Telemetry> {
+export const fetchTelemetry: () => Promise<Telemetry> = async () => {
   const [posRes, battRes, hbRes, gpsRes, ekfRes] = await Promise.all([
     fetch(`${API_BASE}/GLOBAL_POSITION_INT`),
     fetch(`${API_BASE}/SYS_STATUS`),
