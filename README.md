@@ -1,6 +1,7 @@
 # GCS Frontend App
 
 Ground Control Station web application for UAV/drone telemetry and mission control.
+<img width="1512" height="948" alt="image" src="https://github.com/user-attachments/assets/ae7b4292-b39d-448e-8943-185b2b651a4a" />
 
 ## Tech Stack
 
